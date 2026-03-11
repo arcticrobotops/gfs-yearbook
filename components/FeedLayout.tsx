@@ -72,34 +72,38 @@ export default function FeedLayout({
         onCollectionChange={handleCollectionChange}
       />
 
-      {/* Yearbook title spread */}
-      <div className="bg-cream pt-14 pb-12 sm:pt-20 sm:pb-16 text-center border-t-4 border-gold border-b border-b-gold/20">
-        <div className="mx-auto max-w-3xl px-4">
-          <p className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.4em] uppercase mb-4">
-            Neskowin, Oregon
-          </p>
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-1">
-            <span className="text-gold text-sm sm:text-base">&#9733;</span>
-            <div className="w-8 sm:w-12 h-px bg-gold/40" />
-            <span className="text-gold text-sm sm:text-base">&#9733;</span>
+      {/* Hero section with first product image */}
+      {products.length > 0 && products[0].images.edges[0]?.node && (
+        <div className="relative h-[60vh] sm:h-[70vh] overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${products[0].images.edges[0].node.url})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-varsity-blue/60 via-varsity-blue/40 to-cream" />
+          <div className="relative h-full flex items-end justify-center pb-12 sm:pb-16 px-4">
+            <div className="text-center">
+              <p className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.4em] uppercase mb-3 drop-shadow-sm">
+                Neskowin, Oregon
+              </p>
+              <h2 className="font-[family-name:var(--font-display)] text-cream text-3xl sm:text-4xl lg:text-5xl italic leading-tight drop-shadow-md">
+                The Coldwater Cowboys<br className="hidden sm:block" /> of the 45th Parallel
+              </h2>
+              <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4">
+                <span className="text-gold text-sm sm:text-base drop-shadow-sm">&#9733;</span>
+                <div className="w-8 sm:w-12 h-px bg-gold/60" />
+                <span className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.3em] uppercase drop-shadow-sm">
+                  Vol. I
+                </span>
+                <div className="w-8 sm:w-12 h-px bg-gold/60" />
+                <span className="text-gold text-sm sm:text-base drop-shadow-sm">&#9733;</span>
+              </div>
+              <p className="font-[family-name:var(--font-body)] text-cream/80 text-sm mt-5 tracking-wide drop-shadow-sm">
+                A collection of memories, gear, and the things that keep us paddling out.
+              </p>
+            </div>
           </div>
-          <h2 className="font-[family-name:var(--font-display)] text-varsity-blue text-2xl sm:text-3xl lg:text-4xl italic leading-tight">
-            The Coldwater Cowboys of the 45th Parallel
-          </h2>
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4">
-            <span className="text-gold text-sm sm:text-base">&#9733;</span>
-            <div className="w-8 sm:w-12 h-px bg-gold/40" />
-            <span className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.3em] uppercase">
-              Vol. I
-            </span>
-            <div className="w-8 sm:w-12 h-px bg-gold/40" />
-            <span className="text-gold text-sm sm:text-base">&#9733;</span>
-          </div>
-          <p className="font-[family-name:var(--font-body)] text-charcoal/50 text-sm mt-5 tracking-wide">
-            A collection of memories, gear, and the things that keep us paddling out.
-          </p>
         </div>
-      </div>
+      )}
 
       {/* Feed */}
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
