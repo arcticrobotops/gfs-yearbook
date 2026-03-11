@@ -68,8 +68,10 @@ export default function EditorialCard({
         </span>
       </div>
 
-      {/* Polaroid frame */}
-      <div className="bg-white p-3 sm:p-4 shadow-md rounded-sm">
+      {/* Polaroid frame with tape strip */}
+      <div className="relative bg-white p-3 sm:p-4 polaroid-card rounded-[2px]">
+        {/* Gold tape strip */}
+        <div className="tape-strip" />
         <div className="relative aspect-[4/3] overflow-hidden">
           <Image
             src={imageUrl}
