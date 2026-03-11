@@ -16,21 +16,28 @@ const rotations = [
   'card-rotate-5',
 ];
 
-const annotations = [
-  { text: 'Staff Pick', rotation: '-rotate-6' },
-  { text: 'Classic', rotation: 'rotate-3' },
-  { text: 'Fan Favorite', rotation: '-rotate-3' },
-  { text: 'Essential', rotation: 'rotate-6' },
-  { text: 'New Drop', rotation: '-rotate-2' },
-  { text: 'Club Approved', rotation: 'rotate-4' },
-];
+// Map product tags to display badges
+const tagBadgeMap: Record<string, string> = {
+  'staff-pick': 'Staff Pick',
+  'new': 'New Drop',
+  'bestseller': 'Fan Favorite',
+  'classic': 'Classic',
+  'essential': 'Essential',
+  'limited': 'Limited',
+};
+
+const badgeRotations = ['-rotate-6', 'rotate-3', '-rotate-3', 'rotate-6', '-rotate-2', 'rotate-4'];
 
 export default function ProductCard({ product, index }: ProductCardProps) {
   const image = product.images.edges[0]?.node;
   const price = parseFloat(product.priceRange.minVariantPrice.amount);
   const maxPrice = parseFloat(product.priceRange.maxVariantPrice.amount);
   const rotationClass = rotations[index % rotations.length];
-  const annotation = annotations[index % annotations.length];
+
+  // Only show badge if product has a matching tag
+  const matchedTag = product.tags.find(t => t.toLowerCase() in tagBadgeMap);
+  const badgeText = matchedTag ? tagBadgeMap[matchedTag.toLowerCase()] : null;
+  const badgeRotation = badgeRotations[index % badgeRotations.length];
 
   return (
     <Link
@@ -38,14 +45,16 @@ export default function ProductCard({ product, index }: ProductCardProps) {
       className={`group block ${rotationClass} transition-all duration-300 ease-out hover:scale-105 hover:rotate-0`}
     >
       <div className="relative polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
-        {/* Hover annotation badge */}
-        <div
-          className={`absolute -top-3 -right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${annotation.rotation}`}
-        >
-          <span className="inline-block bg-maroon text-cream font-[family-name:var(--font-display)] text-[10px] tracking-[0.15em] uppercase px-2.5 py-1 rounded-sm shadow-sm">
-            {annotation.text}
-          </span>
-        </div>
+        {/* Hover annotation badge — only shown for tagged products */}
+        {badgeText && (
+          <div
+            className={`absolute -top-3 -right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${badgeRotation}`}
+          >
+            <span className="inline-block bg-maroon text-cream font-[family-name:var(--font-display)] text-[10px] tracking-[0.15em] uppercase px-2.5 py-1 rounded-sm shadow-sm">
+              {badgeText}
+            </span>
+          </div>
+        )}
 
         {/* Polaroid image area */}
         <div className="relative aspect-square overflow-hidden bg-cream">

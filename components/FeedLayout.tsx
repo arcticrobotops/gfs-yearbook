@@ -19,18 +19,20 @@ export default function FeedLayout({
   const [products, setProducts] = useState<ShopifyProduct[]>(initialProducts);
   const [activeCollection, setActiveCollection] = useState('all');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleCollectionChange = useCallback(async (handle: string) => {
     setActiveCollection(handle);
     setLoading(true);
 
     try {
+      setError(false);
       const params = handle !== 'all' ? `?collection=${handle}` : '';
       const res = await fetch(`/api/products${params}`);
       const data = await res.json();
       setProducts(data.products || []);
-    } catch (err) {
-      console.error('Failed to fetch products:', err);
+    } catch {
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -101,7 +103,19 @@ export default function FeedLayout({
 
       {/* Feed */}
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {loading ? (
+        {error ? (
+          <div className="text-center py-20">
+            <p className="font-[family-name:var(--font-display)] text-maroon text-lg italic mb-3">
+              Something went wrong loading this chapter.
+            </p>
+            <button
+              onClick={() => handleCollectionChange(activeCollection)}
+              className="font-[family-name:var(--font-body)] text-varsity-blue text-sm underline underline-offset-2 hover:text-maroon transition-colors"
+            >
+              Try again
+            </button>
+          </div>
+        ) : loading ? (
           <div className="text-center py-24">
             <div className="inline-flex flex-col items-center gap-5">
               <div className="yearbook-spinner text-gold text-4xl">&#9733;</div>
