@@ -30,7 +30,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
       rel="noopener noreferrer"
       className={`group block ${rotationClass} transition-all duration-300 ease-out hover:scale-105 hover:rotate-0`}
     >
-      <div className="bg-white p-3 sm:p-4 shadow-md hover:shadow-xl transition-shadow duration-300 rounded-sm">
+      <div className="polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
         {/* Polaroid image area */}
         <div className="relative aspect-square overflow-hidden bg-cream">
           {image ? (
@@ -50,8 +50,8 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           )}
         </div>
 
-        {/* Caption area (Polaroid bottom) */}
-        <div className="pt-3 pb-1 text-center">
+        {/* Caption area (thick Polaroid bottom strip) */}
+        <div className="pt-4 pb-5 sm:pt-5 sm:pb-6 text-center">
           <h3 className="font-[family-name:var(--font-display)] text-charcoal text-sm sm:text-base italic leading-tight line-clamp-2">
             {product.title}
           </h3>

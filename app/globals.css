@@ -61,6 +61,21 @@ body {
 .card-rotate-4 { transform: rotate(2deg); }
 .card-rotate-5 { transform: rotate(-1.5deg); }
 
+/* Polaroid card: warm layered shadows */
+.polaroid-card {
+  box-shadow:
+    0 1px 3px rgba(51, 33, 20, 0.12),
+    0 4px 8px rgba(51, 33, 20, 0.08),
+    0 8px 20px rgba(51, 33, 20, 0.06);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.polaroid-card:hover {
+  box-shadow:
+    0 2px 6px rgba(51, 33, 20, 0.15),
+    0 8px 16px rgba(51, 33, 20, 0.12),
+    0 16px 32px rgba(51, 33, 20, 0.08);
+}
+
 /* Gold accent underline */
 .gold-underline {
   position: relative;
