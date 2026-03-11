@@ -71,16 +71,29 @@ export default function FeedLayout({
       />
 
       {/* Yearbook title spread */}
-      <div className="bg-cream py-10 sm:py-14 text-center border-b border-gold/20">
+      <div className="bg-cream pt-14 pb-12 sm:pt-20 sm:pb-16 text-center border-t-4 border-gold border-b border-b-gold/20">
         <div className="mx-auto max-w-3xl px-4">
-          <p className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.4em] uppercase mb-3">
+          <p className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.4em] uppercase mb-4">
             Neskowin, Oregon
           </p>
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-1">
+            <span className="text-gold text-sm sm:text-base">&#9733;</span>
+            <div className="w-8 sm:w-12 h-px bg-gold/40" />
+            <span className="text-gold text-sm sm:text-base">&#9733;</span>
+          </div>
           <h2 className="font-[family-name:var(--font-display)] text-varsity-blue text-2xl sm:text-3xl lg:text-4xl italic leading-tight">
             The Coldwater Cowboys of the 45th Parallel
           </h2>
-          <div className="mx-auto mt-4 w-16 h-px bg-gold" />
-          <p className="font-[family-name:var(--font-body)] text-charcoal/50 text-sm mt-4 tracking-wide">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4">
+            <span className="text-gold text-sm sm:text-base">&#9733;</span>
+            <div className="w-8 sm:w-12 h-px bg-gold/40" />
+            <span className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.3em] uppercase">
+              Vol. I
+            </span>
+            <div className="w-8 sm:w-12 h-px bg-gold/40" />
+            <span className="text-gold text-sm sm:text-base">&#9733;</span>
+          </div>
+          <p className="font-[family-name:var(--font-body)] text-charcoal/50 text-sm mt-5 tracking-wide">
             A collection of memories, gear, and the things that keep us paddling out.
           </p>
         </div>
