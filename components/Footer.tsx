@@ -52,7 +52,7 @@ export default function Footer() {
             <p className="font-body text-cream/30 text-xs tracking-wider uppercase">
               Ghost Forest Surf Club &copy; {new Date().getFullYear()}
             </p>
-            <p className="font-display text-cream/20 text-[11px] italic tracking-wide">
+            <p className="font-display text-cream/20 text-xs italic tracking-wide">
               No wetsuits were harmed in the making of this yearbook. Several were retired with honors.
             </p>
           </div>

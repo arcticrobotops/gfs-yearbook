@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import ProductCard from './ProductCard';
 import EditorialCard, { getEditorialByIndex } from './EditorialCard';
 import TextMoment from './TextMoment';
+import ErrorBoundary from './ErrorBoundary';
 
 interface FeedLayoutProps {
   initialProducts: ShopifyProduct[];
@@ -66,11 +67,13 @@ export default function FeedLayout({
 
   return (
     <>
-      <Navbar
-        collections={collections}
-        activeCollection={activeCollection}
-        onCollectionChange={handleCollectionChange}
-      />
+      <ErrorBoundary>
+        <Navbar
+          collections={collections}
+          activeCollection={activeCollection}
+          onCollectionChange={handleCollectionChange}
+        />
+      </ErrorBoundary>
 
       {/* Hero section with first product image */}
       {products.length > 0 && products[0].images.edges[0]?.node && (
@@ -148,43 +151,46 @@ export default function FeedLayout({
             {feedItems.map((item, i) => {
               if (item.type === 'product') {
                 return (
-                  <div key={`product-${item.product.id}`} className="flex">
-                    <div className="w-full">
-                      <ProductCard
-                        product={item.product}
-                        index={item.productIndex}
-                      />
+                  <ErrorBoundary key={`product-${item.product.id}`}>
+                    <div className="flex">
+                      <div className="w-full">
+                        <ProductCard
+                          product={item.product}
+                          index={item.productIndex}
+                        />
+                      </div>
                     </div>
-                  </div>
+                  </ErrorBoundary>
                 );
               }
 
               if (item.type === 'editorial') {
                 const editorial = getEditorialByIndex(item.editorialIndex);
                 return (
-                  <div
-                    key={`editorial-${item.editorialIndex}`}
-                    className="sm:col-span-2 flex"
-                  >
-                    <div className="w-full">
-                      <EditorialCard
-                        imageUrl={editorial.imageUrl}
-                        alt={editorial.alt}
-                        caption={editorial.caption}
-                        index={editorial.index}
-                      />
+                  <ErrorBoundary key={`editorial-${item.editorialIndex}`}>
+                    <div className="sm:col-span-2 flex">
+                      <div className="w-full">
+                        <EditorialCard
+                          imageUrl={editorial.imageUrl}
+                          alt={editorial.alt}
+                          caption={editorial.caption}
+                          index={editorial.index}
+                        />
+                      </div>
                     </div>
-                  </div>
+                  </ErrorBoundary>
                 );
               }
 
               if (item.type === 'text-moment') {
                 return (
-                  <div key={`moment-${item.momentIndex}`} className="flex items-center">
-                    <div className="w-full">
-                      <TextMoment index={item.momentIndex} />
+                  <ErrorBoundary key={`moment-${item.momentIndex}`}>
+                    <div className="flex items-center">
+                      <div className="w-full">
+                        <TextMoment index={item.momentIndex} />
+                      </div>
                     </div>
-                  </div>
+                  </ErrorBoundary>
                 );
               }
 

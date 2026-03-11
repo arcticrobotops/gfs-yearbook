@@ -1,6 +1,7 @@
 import { getProducts, getCollections } from '@/lib/shopify';
 import FeedLayout from '@/components/FeedLayout';
 import Footer from '@/components/Footer';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 export const revalidate = 60;
 
@@ -21,10 +22,12 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-cream overflow-x-hidden">
-      <FeedLayout
-        initialProducts={products}
-        collections={collections}
-      />
+      <ErrorBoundary>
+        <FeedLayout
+          initialProducts={products}
+          collections={collections}
+        />
+      </ErrorBoundary>
       <Footer />
     </div>
   );

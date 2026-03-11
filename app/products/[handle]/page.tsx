@@ -1,8 +1,11 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getProductByHandle, getProducts } from '@/lib/shopify';
 import ProductDetails from '@/components/ProductDetails';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import PDPSkeleton from '@/components/PDPSkeleton';
 
 export const revalidate = 60;
 
@@ -149,22 +152,24 @@ export default async function ProductPage({
           <hr className="yearbook-divider max-w-xs mx-auto mt-4" />
         </div>
 
-        <ProductDetails
-          title={product.title}
-          handle={product.handle}
-          description={product.description}
-          descriptionHtml={product.descriptionHtml}
-          productType={product.productType}
-          tags={product.tags}
-          collection={collection ? { title: collection.title } : undefined}
-          images={images}
-          variants={variants}
-          shopUrl={shopUrl}
-          superlative={superlative}
-          price={price}
-          maxPrice={maxPrice}
-          relatedProducts={relatedProducts}
-        />
+        <ErrorBoundary>
+          <ProductDetails
+            title={product.title}
+            handle={product.handle}
+            description={product.description}
+            descriptionHtml={product.descriptionHtml}
+            productType={product.productType}
+            tags={product.tags}
+            collection={collection ? { title: collection.title } : undefined}
+            images={images}
+            variants={variants}
+            shopUrl={shopUrl}
+            superlative={superlative}
+            price={price}
+            maxPrice={maxPrice}
+            relatedProducts={relatedProducts}
+          />
+        </ErrorBoundary>
       </article>
     </main>
   );
