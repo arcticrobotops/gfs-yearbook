@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { ShopifyProduct } from '@/types/shopify';
 
 interface ProductCardProps {
@@ -31,13 +32,9 @@ export default function ProductCard({ product, index }: ProductCardProps) {
   const rotationClass = rotations[index % rotations.length];
   const annotation = annotations[index % annotations.length];
 
-  const linkUrl = product.onlineStoreUrl || `https://ghostforestsurfclub.com/products/${product.handle}`;
-
   return (
-    <a
-      href={linkUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href={`/products/${product.handle}`}
       className={`group block ${rotationClass} transition-all duration-300 ease-out hover:scale-105 hover:rotate-0`}
     >
       <div className="relative polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
@@ -81,6 +78,6 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           </p>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
