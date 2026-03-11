@@ -124,10 +124,10 @@ export default function FeedLayout({
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={`skeleton-${i}`} className={`card-rotate-${i % 6}`}>
                 <div className="polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
-                  <div className="aspect-square bg-charcoal/5 animate-pulse rounded-sm" />
-                  <div className="pt-4 pb-5 sm:pt-5 sm:pb-6 flex flex-col items-center gap-2">
-                    <div className="h-4 w-3/4 bg-charcoal/8 animate-pulse rounded-sm" />
-                    <div className="h-3 w-1/3 bg-charcoal/5 animate-pulse rounded-sm" />
+                  <div className="aspect-square bg-charcoal/10 animate-pulse rounded-sm" />
+                  <div className="pt-4 pb-5 sm:pt-5 sm:pb-6 flex flex-col items-center gap-2.5">
+                    <div className="h-4 w-3/4 bg-charcoal/10 animate-pulse rounded-sm" />
+                    <div className="h-3 w-1/3 bg-charcoal/10 animate-pulse rounded-sm" />
                   </div>
                 </div>
               </div>

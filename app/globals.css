@@ -146,6 +146,15 @@ body {
   font-family: var(--font-body);
 }
 
+/* Hide scrollbar on mobile nav pills */
+.nav-scroll-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.nav-scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;

@@ -50,7 +50,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           <div
             className={`absolute -top-3 -right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${badgeRotation}`}
           >
-            <span className="inline-block bg-maroon text-cream font-display text-[10px] tracking-[0.15em] uppercase px-2.5 py-1 rounded-sm shadow-sm">
+            <span className="inline-block bg-maroon text-cream font-display text-[11px] tracking-[0.15em] uppercase px-2.5 py-1 rounded-sm shadow-sm">
               {badgeText}
             </span>
           </div>

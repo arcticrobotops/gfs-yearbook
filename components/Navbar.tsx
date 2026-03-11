@@ -1,6 +1,3 @@
-'use client';
-
-import { useState } from 'react';
 import { ShopifyCollection } from '@/types/shopify';
 
 interface NavbarProps {
@@ -14,7 +11,6 @@ export default function Navbar({
   activeCollection,
   onCollectionChange,
 }: NavbarProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const filteredCollections = collections.filter(
     (c) => c.handle !== 'frontpage'
@@ -34,36 +30,7 @@ export default function Navbar({
               Vol. I
             </p>
           </div>
-          <div className="flex-1 flex justify-end">
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden text-cream p-2 hover:text-gold transition-colors"
-              aria-label="Toggle menu"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-              >
-                {mobileMenuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-                )}
-              </svg>
-            </button>
-          </div>
+          <div className="flex-1" />
         </div>
 
         {/* Gold divider between header and tabs - desktop */}
@@ -97,42 +64,34 @@ export default function Navbar({
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-cream/10 bg-varsity-blue">
-          <div className="px-4 py-3 space-y-1">
+      {/* Mobile horizontal scrolling pills */}
+      <div className="lg:hidden border-t border-cream/10 bg-varsity-blue">
+        <div className="flex overflow-x-auto scroll-smooth px-4 py-2.5 gap-2 nav-scroll-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <button
+            onClick={() => onCollectionChange('all')}
+            className={`flex-none min-h-[44px] px-4 py-2.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm whitespace-nowrap transition-all duration-200 ${
+              activeCollection === 'all'
+                ? 'bg-gold text-varsity-blue font-semibold'
+                : 'text-cream/70 hover:text-cream bg-cream/5'
+            }`}
+          >
+            All Chapters
+          </button>
+          {filteredCollections.map((collection) => (
             <button
-              onClick={() => {
-                onCollectionChange('all');
-                setMobileMenuOpen(false);
-              }}
-              className={`block w-full text-left px-3 py-3 min-h-[44px] text-sm tracking-[0.1em] uppercase font-body rounded-sm transition-all ${
-                activeCollection === 'all'
+              key={collection.handle}
+              onClick={() => onCollectionChange(collection.handle)}
+              className={`flex-none min-h-[44px] px-4 py-2.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm whitespace-nowrap transition-all duration-200 ${
+                activeCollection === collection.handle
                   ? 'bg-gold text-varsity-blue font-semibold'
-                  : 'text-cream/70 hover:text-cream hover:bg-cream/10'
+                  : 'text-cream/70 hover:text-cream bg-cream/5'
               }`}
             >
-              All Chapters
+              {collection.title}
             </button>
-            {filteredCollections.map((collection) => (
-              <button
-                key={collection.handle}
-                onClick={() => {
-                  onCollectionChange(collection.handle);
-                  setMobileMenuOpen(false);
-                }}
-                className={`block w-full text-left px-3 py-3 min-h-[44px] text-sm tracking-[0.1em] uppercase font-body rounded-sm transition-all ${
-                  activeCollection === collection.handle
-                    ? 'bg-gold text-varsity-blue font-semibold'
-                    : 'text-cream/70 hover:text-cream hover:bg-cream/10'
-                }`}
-              >
-                {collection.title}
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
-      )}
+      </div>
     </nav>
   );
 }

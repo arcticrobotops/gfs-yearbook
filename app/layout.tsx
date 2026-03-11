@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfairDisplay.variable} ${dmSans.variable} antialiased bg-cream text-charcoal`}
+        className={`${playfairDisplay.variable} ${dmSans.variable} antialiased bg-cream text-charcoal overflow-x-hidden`}
       >
         {children}
       </body>

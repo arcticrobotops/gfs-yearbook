@@ -21,16 +21,16 @@ export default function Footer() {
           </div>
 
           {/* Location and volume */}
-          <div className="flex items-center justify-center gap-3 text-cream/60">
-            <span className="font-body text-sm tracking-[0.1em] uppercase">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-cream/60">
+            <span className="font-body text-xs sm:text-sm tracking-[0.1em] uppercase">
               Neskowin, Oregon
             </span>
             <span className="text-gold">&#8226;</span>
-            <span className="font-body text-sm tracking-[0.1em] uppercase">
+            <span className="font-body text-xs sm:text-sm tracking-[0.1em] uppercase">
               Volume I
             </span>
             <span className="text-gold">&#8226;</span>
-            <span className="font-body text-sm tracking-[0.1em] uppercase">
+            <span className="font-body text-xs sm:text-sm tracking-[0.1em] uppercase">
               2025
             </span>
           </div>
@@ -52,7 +52,7 @@ export default function Footer() {
             <p className="font-body text-cream/30 text-xs tracking-wider uppercase">
               Ghost Forest Surf Club &copy; {new Date().getFullYear()}
             </p>
-            <p className="font-display text-cream/20 text-[10px] italic tracking-wide">
+            <p className="font-display text-cream/20 text-[11px] italic tracking-wide">
               No wetsuits were harmed in the making of this yearbook. Several were retired with honors.
             </p>
           </div>
