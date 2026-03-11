@@ -6,6 +6,13 @@ export default function Footer() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="text-center space-y-6">
+          {/* Gold seal emblem */}
+          <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-gold/60 flex items-center justify-center">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border border-gold/30 flex items-center justify-center">
+              <span className="text-gold text-2xl sm:text-3xl">&#9733;</span>
+            </div>
+          </div>
+
           {/* Publisher */}
           <div>
             <p className="font-[family-name:var(--font-display)] text-lg sm:text-xl tracking-[0.15em] uppercase">
@@ -24,7 +31,7 @@ export default function Footer() {
             </span>
             <span className="text-gold">&#8226;</span>
             <span className="font-[family-name:var(--font-body)] text-sm tracking-[0.1em] uppercase">
-              2024
+              2025
             </span>
           </div>
 
@@ -41,9 +48,12 @@ export default function Footer() {
           </div>
 
           {/* Fine print */}
-          <div className="pt-2">
+          <div className="pt-2 space-y-1.5">
             <p className="font-[family-name:var(--font-body)] text-cream/30 text-xs tracking-wider uppercase">
               Ghost Forest Surf Club &copy; {new Date().getFullYear()}
+            </p>
+            <p className="font-[family-name:var(--font-display)] text-cream/20 text-[10px] italic tracking-wide">
+              No wetsuits were harmed in the making of this yearbook. Several were retired with honors.
             </p>
           </div>
         </div>
