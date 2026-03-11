@@ -140,20 +140,21 @@ export default async function ProductPage({
         </Link>
       </div>
 
-      <article className="max-w-5xl mx-auto px-4 pb-20">
-        {/* Header strip */}
-        <div className="text-center mb-8">
-          <p className="font-display text-gold tracking-[0.25em] uppercase text-xs sm:text-sm mb-1">
-            Member Profile
-          </p>
-          <h1 className="font-display text-varsity-blue text-3xl sm:text-4xl md:text-5xl italic leading-tight">
-            {product.title}
-          </h1>
-          <hr className="yearbook-divider max-w-xs mx-auto mt-4" />
-        </div>
+      <Suspense fallback={<PDPSkeleton />}>
+        <article className="max-w-5xl mx-auto px-4 pb-20">
+          {/* Header strip */}
+          <div className="text-center mb-8">
+            <p className="font-display text-gold tracking-[0.25em] uppercase text-xs sm:text-sm mb-1">
+              Member Profile
+            </p>
+            <h1 className="font-display text-varsity-blue text-3xl sm:text-4xl md:text-5xl italic leading-tight">
+              {product.title}
+            </h1>
+            <hr className="yearbook-divider max-w-xs mx-auto mt-4" />
+          </div>
 
-        <ErrorBoundary>
-          <ProductDetails
+          <ErrorBoundary>
+            <ProductDetails
             title={product.title}
             handle={product.handle}
             description={product.description}
@@ -169,8 +170,9 @@ export default async function ProductPage({
             maxPrice={maxPrice}
             relatedProducts={relatedProducts}
           />
-        </ErrorBoundary>
-      </article>
+          </ErrorBoundary>
+        </article>
+      </Suspense>
     </main>
   );
 }
