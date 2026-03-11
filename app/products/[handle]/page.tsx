@@ -84,13 +84,35 @@ export default async function ProductPage({
     price: node.price,
   }));
 
+  // JSON-LD structured data
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: product.description,
+    image: images[0]?.url,
+    offers: {
+      '@type': 'AggregateOffer',
+      lowPrice: price.toFixed(2),
+      highPrice: maxPrice.toFixed(2),
+      priceCurrency: product.priceRange.minVariantPrice.currencyCode || 'USD',
+      availability: variants.some(v => v.availableForSale)
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
+    },
+  };
+
   return (
     <main className="min-h-screen bg-cream pb-20 md:pb-0">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Back nav */}
       <div className="max-w-5xl mx-auto px-4 pt-6 pb-2">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-varsity-blue/70 hover:text-varsity-blue text-sm font-[family-name:var(--font-body)] tracking-wide transition-colors"
+          className="inline-flex items-center gap-1.5 text-varsity-blue/70 hover:text-varsity-blue text-sm font-[family-name:var(--font-body)] tracking-wide transition-colors min-h-[44px]"
         >
           <span className="text-lg leading-none">&larr;</span>
           Back to Yearbook
