@@ -63,7 +63,7 @@ export default function EditorialCard({
     <div className={`${rotationClass} transition-all duration-300 hover:rotate-0`}>
       {/* MEMORIES header */}
       <div className="text-center mb-3">
-        <span className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.3em] uppercase font-semibold">
+        <span className="font-display text-gold text-xs tracking-[0.3em] uppercase font-semibold">
           Memories
         </span>
       </div>
@@ -84,7 +84,7 @@ export default function EditorialCard({
 
         {/* Handwritten caption */}
         <div className="pt-3 pb-1 text-center">
-          <p className="font-[family-name:var(--font-display)] text-charcoal/80 text-sm italic leading-relaxed">
+          <p className="font-display text-charcoal/80 text-sm italic leading-relaxed">
             &ldquo;{caption}&rdquo;
           </p>
         </div>

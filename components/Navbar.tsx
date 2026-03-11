@@ -27,10 +27,10 @@ export default function Navbar({
         <div className="flex items-center justify-between py-4">
           <div className="flex-1" />
           <div className="text-center">
-            <h1 className="font-[family-name:var(--font-display)] text-cream text-sm tracking-[0.25em] uppercase font-semibold sm:text-base lg:text-lg">
+            <h1 className="font-display text-cream text-sm tracking-[0.25em] uppercase font-semibold sm:text-base lg:text-lg">
               Ghost Forest Surf Club Annual
             </h1>
-            <p className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.15em] uppercase mt-0.5">
+            <p className="font-display text-gold text-xs tracking-[0.15em] uppercase mt-0.5">
               Vol. I
             </p>
           </div>
@@ -66,11 +66,14 @@ export default function Navbar({
           </div>
         </div>
 
+        {/* Gold divider between header and tabs - desktop */}
+        <div className="hidden lg:block h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent -mt-1 mb-2" />
+
         {/* Chapter tabs - desktop */}
-        <div className="hidden lg:flex items-center justify-center gap-1 pb-3 -mt-1">
+        <div className="hidden lg:flex items-center justify-center gap-1 pb-3">
           <button
             onClick={() => onCollectionChange('all')}
-            className={`px-4 py-1.5 text-xs tracking-[0.12em] uppercase font-[family-name:var(--font-body)] rounded-sm transition-all duration-200 ${
+            className={`px-4 py-1.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm transition-all duration-200 ${
               activeCollection === 'all'
                 ? 'bg-gold text-varsity-blue font-semibold'
                 : 'text-cream/70 hover:text-cream hover:bg-cream/10'
@@ -82,7 +85,7 @@ export default function Navbar({
             <button
               key={collection.handle}
               onClick={() => onCollectionChange(collection.handle)}
-              className={`px-4 py-1.5 text-xs tracking-[0.12em] uppercase font-[family-name:var(--font-body)] rounded-sm transition-all duration-200 ${
+              className={`px-4 py-1.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm transition-all duration-200 ${
                 activeCollection === collection.handle
                   ? 'bg-gold text-varsity-blue font-semibold'
                   : 'text-cream/70 hover:text-cream hover:bg-cream/10'
@@ -103,7 +106,7 @@ export default function Navbar({
                 onCollectionChange('all');
                 setMobileMenuOpen(false);
               }}
-              className={`block w-full text-left px-3 py-2 text-sm tracking-[0.1em] uppercase font-[family-name:var(--font-body)] rounded-sm transition-all ${
+              className={`block w-full text-left px-3 py-3 min-h-[44px] text-sm tracking-[0.1em] uppercase font-body rounded-sm transition-all ${
                 activeCollection === 'all'
                   ? 'bg-gold text-varsity-blue font-semibold'
                   : 'text-cream/70 hover:text-cream hover:bg-cream/10'
@@ -118,7 +121,7 @@ export default function Navbar({
                   onCollectionChange(collection.handle);
                   setMobileMenuOpen(false);
                 }}
-                className={`block w-full text-left px-3 py-2 text-sm tracking-[0.1em] uppercase font-[family-name:var(--font-body)] rounded-sm transition-all ${
+                className={`block w-full text-left px-3 py-3 min-h-[44px] text-sm tracking-[0.1em] uppercase font-body rounded-sm transition-all ${
                   activeCollection === collection.handle
                     ? 'bg-gold text-varsity-blue font-semibold'
                     : 'text-cream/70 hover:text-cream hover:bg-cream/10'

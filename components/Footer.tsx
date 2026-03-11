@@ -15,29 +15,29 @@ export default function Footer() {
 
           {/* Publisher */}
           <div>
-            <p className="font-[family-name:var(--font-display)] text-lg sm:text-xl tracking-[0.15em] uppercase">
+            <p className="font-display text-lg sm:text-xl tracking-[0.15em] uppercase">
               Published by Ghost Forest Surf Club
             </p>
           </div>
 
           {/* Location and volume */}
           <div className="flex items-center justify-center gap-3 text-cream/60">
-            <span className="font-[family-name:var(--font-body)] text-sm tracking-[0.1em] uppercase">
+            <span className="font-body text-sm tracking-[0.1em] uppercase">
               Neskowin, Oregon
             </span>
             <span className="text-gold">&#8226;</span>
-            <span className="font-[family-name:var(--font-body)] text-sm tracking-[0.1em] uppercase">
+            <span className="font-body text-sm tracking-[0.1em] uppercase">
               Volume I
             </span>
             <span className="text-gold">&#8226;</span>
-            <span className="font-[family-name:var(--font-body)] text-sm tracking-[0.1em] uppercase">
+            <span className="font-body text-sm tracking-[0.1em] uppercase">
               2025
             </span>
           </div>
 
           {/* Tagline */}
           <div className="pt-2">
-            <p className="font-[family-name:var(--font-display)] text-gold text-sm italic tracking-wide">
+            <p className="font-display text-gold text-sm italic tracking-wide">
               &#9733; Coldwater Cowboys &#9733; 45th Parallel &#9733;
             </p>
           </div>
@@ -49,10 +49,10 @@ export default function Footer() {
 
           {/* Fine print */}
           <div className="pt-2 space-y-1.5">
-            <p className="font-[family-name:var(--font-body)] text-cream/30 text-xs tracking-wider uppercase">
+            <p className="font-body text-cream/30 text-xs tracking-wider uppercase">
               Ghost Forest Surf Club &copy; {new Date().getFullYear()}
             </p>
-            <p className="font-[family-name:var(--font-display)] text-cream/20 text-[10px] italic tracking-wide">
+            <p className="font-display text-cream/20 text-[10px] italic tracking-wide">
               No wetsuits were harmed in the making of this yearbook. Several were retired with honors.
             </p>
           </div>

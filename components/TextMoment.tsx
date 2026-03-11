@@ -64,7 +64,7 @@ export default function TextMoment({ index }: TextMomentProps) {
         >
           {/* SUPERLATIVES header */}
           <div className="mb-4">
-            <span className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.3em] uppercase font-semibold">
+            <span className="font-display text-gold text-xs tracking-[0.3em] uppercase font-semibold">
               Superlatives
             </span>
           </div>
@@ -76,7 +76,7 @@ export default function TextMoment({ index }: TextMomentProps) {
 
           {/* Superlative title */}
           <h3
-            className={`font-[family-name:var(--font-display)] text-lg sm:text-xl italic leading-snug mb-3 ${
+            className={`font-display text-lg sm:text-xl italic leading-snug mb-3 ${
               isBlue ? 'text-cream' : 'text-maroon'
             }`}
           >
@@ -85,7 +85,7 @@ export default function TextMoment({ index }: TextMomentProps) {
 
           {/* Attribution */}
           <p
-            className={`font-[family-name:var(--font-body)] text-xs tracking-[0.1em] uppercase ${
+            className={`font-body text-xs tracking-[0.1em] uppercase ${
               isBlue ? 'text-cream/60' : 'text-charcoal/50'
             }`}
           >

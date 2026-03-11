@@ -82,22 +82,22 @@ export default function FeedLayout({
           <div className="absolute inset-0 bg-gradient-to-b from-varsity-blue/60 via-varsity-blue/40 to-cream" />
           <div className="relative h-full flex items-end justify-center pb-12 sm:pb-16 px-4">
             <div className="text-center">
-              <p className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.4em] uppercase mb-3 drop-shadow-sm">
+              <p className="font-display text-gold text-xs tracking-[0.4em] uppercase mb-3 drop-shadow-sm">
                 Neskowin, Oregon
               </p>
-              <h2 className="font-[family-name:var(--font-display)] text-cream text-3xl sm:text-4xl lg:text-5xl italic leading-tight drop-shadow-md">
+              <h2 className="font-display text-cream text-3xl sm:text-4xl lg:text-5xl italic leading-tight drop-shadow-md">
                 The Coldwater Cowboys<br className="hidden sm:block" /> of the 45th Parallel
               </h2>
               <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4">
                 <span className="text-gold text-sm sm:text-base drop-shadow-sm">&#9733;</span>
                 <div className="w-8 sm:w-12 h-px bg-gold/60" />
-                <span className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.3em] uppercase drop-shadow-sm">
+                <span className="font-display text-gold text-xs tracking-[0.3em] uppercase drop-shadow-sm">
                   Vol. I
                 </span>
                 <div className="w-8 sm:w-12 h-px bg-gold/60" />
                 <span className="text-gold text-sm sm:text-base drop-shadow-sm">&#9733;</span>
               </div>
-              <p className="font-[family-name:var(--font-body)] text-cream/80 text-sm mt-5 tracking-wide drop-shadow-sm">
+              <p className="font-body text-cream/80 text-sm mt-5 tracking-wide drop-shadow-sm">
                 A collection of memories, gear, and the things that keep us paddling out.
               </p>
             </div>
@@ -109,32 +109,33 @@ export default function FeedLayout({
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {error ? (
           <div className="text-center py-20">
-            <p className="font-[family-name:var(--font-display)] text-maroon text-lg italic mb-3">
+            <p className="font-display text-maroon text-lg italic mb-3">
               Something went wrong loading this chapter.
             </p>
             <button
               onClick={() => handleCollectionChange(activeCollection)}
-              className="font-[family-name:var(--font-body)] text-varsity-blue text-sm underline underline-offset-2 hover:text-maroon transition-colors"
+              className="font-body text-varsity-blue text-sm underline underline-offset-2 hover:text-maroon transition-colors"
             >
               Try again
             </button>
           </div>
         ) : loading ? (
-          <div className="text-center py-24">
-            <div className="inline-flex flex-col items-center gap-5">
-              <div className="yearbook-spinner text-gold text-4xl">&#9733;</div>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-px bg-gold/40" />
-                <p className="font-[family-name:var(--font-display)] text-varsity-blue/50 text-lg italic">
-                  Flipping pages...
-                </p>
-                <div className="w-8 h-px bg-gold/40" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={`skeleton-${i}`} className={`card-rotate-${i % 6}`}>
+                <div className="polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
+                  <div className="aspect-square bg-charcoal/5 animate-pulse rounded-sm" />
+                  <div className="pt-4 pb-5 sm:pt-5 sm:pb-6 flex flex-col items-center gap-2">
+                    <div className="h-4 w-3/4 bg-charcoal/8 animate-pulse rounded-sm" />
+                    <div className="h-3 w-1/3 bg-charcoal/5 animate-pulse rounded-sm" />
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-20">
-            <p className="font-[family-name:var(--font-display)] text-charcoal/40 text-lg italic">
+            <p className="font-display text-charcoal/40 text-lg italic">
               This chapter is still being written.
             </p>
           </div>

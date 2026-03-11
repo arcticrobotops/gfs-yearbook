@@ -138,6 +138,14 @@ body {
   animation: yearbook-spin 2s ease-in-out infinite;
 }
 
+/* Typography utility classes */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-body {
+  font-family: var(--font-body);
+}
+
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;

@@ -84,6 +84,24 @@ export default async function ProductPage({
     price: node.price,
   }));
 
+  // Fetch related products (same collection, or all products as fallback)
+  const collectionHandle = collection?.handle;
+  const { products: allRelated } = await getProducts(
+    20,
+    undefined,
+    collectionHandle || undefined
+  );
+  const relatedProducts = allRelated
+    .filter((p) => p.handle !== handle)
+    .slice(0, 4)
+    .map((p) => ({
+      handle: p.handle,
+      title: p.title,
+      price: parseFloat(p.priceRange.minVariantPrice.amount),
+      imageUrl: p.images.edges[0]?.node.url || null,
+      imageAlt: p.images.edges[0]?.node.altText || null,
+    }));
+
   // JSON-LD structured data
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -112,7 +130,7 @@ export default async function ProductPage({
       <div className="max-w-5xl mx-auto px-4 pt-6 pb-2">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-varsity-blue/70 hover:text-varsity-blue text-sm font-[family-name:var(--font-body)] tracking-wide transition-colors min-h-[44px]"
+          className="inline-flex items-center gap-1.5 text-varsity-blue/70 hover:text-varsity-blue text-sm font-body tracking-wide transition-colors min-h-[44px]"
         >
           <span className="text-lg leading-none">&larr;</span>
           Back to Yearbook
@@ -122,10 +140,10 @@ export default async function ProductPage({
       <article className="max-w-5xl mx-auto px-4 pb-20">
         {/* Header strip */}
         <div className="text-center mb-8">
-          <p className="font-[family-name:var(--font-display)] text-gold tracking-[0.25em] uppercase text-xs sm:text-sm mb-1">
+          <p className="font-display text-gold tracking-[0.25em] uppercase text-xs sm:text-sm mb-1">
             Member Profile
           </p>
-          <h1 className="font-[family-name:var(--font-display)] text-varsity-blue text-3xl sm:text-4xl md:text-5xl italic leading-tight">
+          <h1 className="font-display text-varsity-blue text-3xl sm:text-4xl md:text-5xl italic leading-tight">
             {product.title}
           </h1>
           <hr className="yearbook-divider max-w-xs mx-auto mt-4" />
@@ -145,6 +163,7 @@ export default async function ProductPage({
           superlative={superlative}
           price={price}
           maxPrice={maxPrice}
+          relatedProducts={relatedProducts}
         />
       </article>
     </main>

@@ -50,7 +50,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           <div
             className={`absolute -top-3 -right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${badgeRotation}`}
           >
-            <span className="inline-block bg-maroon text-cream font-[family-name:var(--font-display)] text-[10px] tracking-[0.15em] uppercase px-2.5 py-1 rounded-sm shadow-sm">
+            <span className="inline-block bg-maroon text-cream font-display text-[10px] tracking-[0.15em] uppercase px-2.5 py-1 rounded-sm shadow-sm">
               {badgeText}
             </span>
           </div>
@@ -68,7 +68,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-cream">
-              <span className="text-charcoal/30 font-[family-name:var(--font-display)] text-lg italic">
+              <span className="text-charcoal/30 font-display text-lg italic">
                 No Photo
               </span>
             </div>
@@ -77,10 +77,10 @@ export default function ProductCard({ product, index }: ProductCardProps) {
 
         {/* Caption area (thick Polaroid bottom strip) */}
         <div className="pt-4 pb-5 sm:pt-5 sm:pb-6 text-center">
-          <h3 className="font-[family-name:var(--font-display)] text-charcoal text-sm sm:text-base italic leading-tight line-clamp-2">
+          <h3 className="font-display text-charcoal text-sm sm:text-base italic leading-tight line-clamp-2">
             {product.title}
           </h3>
-          <p className="font-[family-name:var(--font-body)] text-charcoal/60 text-xs sm:text-sm mt-1.5 tracking-wide">
+          <p className="font-body text-charcoal/60 text-xs sm:text-sm mt-1.5 tracking-wide">
             {price === maxPrice
               ? `$${price.toFixed(0)}`
               : `$${price.toFixed(0)} - $${maxPrice.toFixed(0)}`}

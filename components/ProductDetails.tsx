@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Variant {
   id: string;
@@ -15,6 +16,14 @@ interface ProductImage {
   altText: string | null;
   width?: number;
   height?: number;
+}
+
+interface RelatedProduct {
+  handle: string;
+  title: string;
+  price: number;
+  imageUrl: string | null;
+  imageAlt: string | null;
 }
 
 interface ProductDetailsProps {
@@ -31,6 +40,7 @@ interface ProductDetailsProps {
   superlative: string;
   price: number;
   maxPrice: number;
+  relatedProducts?: RelatedProduct[];
 }
 
 export default function ProductDetails({
@@ -46,6 +56,7 @@ export default function ProductDetails({
   superlative,
   price,
   maxPrice,
+  relatedProducts,
 }: ProductDetailsProps) {
   const heroImage = images[0];
   const extraImages = images.slice(1, 5);
@@ -88,7 +99,7 @@ export default function ProductDetails({
                 />
               </div>
               <div className="py-4 sm:py-5 text-center">
-                <p className="font-[family-name:var(--font-display)] text-charcoal/50 text-xs italic">
+                <p className="font-display text-charcoal/50 text-xs italic">
                   Official Club Photo
                 </p>
               </div>
@@ -145,20 +156,20 @@ export default function ProductDetails({
         <div className="border border-gold/30 rounded-sm p-5 sm:p-6 bg-white/60">
           <dl className="space-y-3 text-sm sm:text-base">
             <div className="flex gap-2">
-              <dt className="font-[family-name:var(--font-display)] text-varsity-blue italic min-w-[90px]">
+              <dt className="font-display text-varsity-blue italic min-w-[90px]">
                 Name:
               </dt>
-              <dd className="font-[family-name:var(--font-body)] text-charcoal font-medium">
+              <dd className="font-body text-charcoal font-medium">
                 {title}
               </dd>
             </div>
 
             {collection && (
               <div className="flex gap-2">
-                <dt className="font-[family-name:var(--font-display)] text-varsity-blue italic min-w-[90px]">
+                <dt className="font-display text-varsity-blue italic min-w-[90px]">
                   Club:
                 </dt>
-                <dd className="font-[family-name:var(--font-body)] text-charcoal">
+                <dd className="font-body text-charcoal">
                   {collection.title}
                 </dd>
               </div>
@@ -166,20 +177,20 @@ export default function ProductDetails({
 
             {productType && (
               <div className="flex gap-2">
-                <dt className="font-[family-name:var(--font-display)] text-varsity-blue italic min-w-[90px]">
+                <dt className="font-display text-varsity-blue italic min-w-[90px]">
                   Position:
                 </dt>
-                <dd className="font-[family-name:var(--font-body)] text-charcoal">
+                <dd className="font-body text-charcoal">
                   {productType}
                 </dd>
               </div>
             )}
 
             <div className="flex gap-2">
-              <dt className="font-[family-name:var(--font-display)] text-varsity-blue italic min-w-[90px]">
+              <dt className="font-display text-varsity-blue italic min-w-[90px]">
                 Dues:
               </dt>
-              <dd className="font-[family-name:var(--font-body)] text-maroon font-semibold">
+              <dd className="font-body text-maroon font-semibold">
                 ${displayPrice.toFixed(0)}
               </dd>
             </div>
@@ -188,7 +199,7 @@ export default function ProductDetails({
 
         {/* Superlative */}
         <div className="bg-varsity-blue/5 border-l-4 border-gold px-4 py-3 rounded-r-sm">
-          <p className="font-[family-name:var(--font-display)] text-varsity-blue italic text-sm sm:text-base">
+          <p className="font-display text-varsity-blue italic text-sm sm:text-base">
             &ldquo;{superlative}&rdquo;
           </p>
         </div>
@@ -196,11 +207,11 @@ export default function ProductDetails({
         {/* Bio / Description */}
         {description && (
           <div>
-            <h2 className="font-[family-name:var(--font-display)] text-varsity-blue italic text-lg mb-2 gold-underline">
+            <h2 className="font-display text-varsity-blue italic text-lg mb-2 gold-underline">
               Bio
             </h2>
             <div
-              className="font-[family-name:var(--font-body)] text-charcoal/80 text-sm sm:text-base leading-relaxed mt-4 prose prose-sm max-w-none"
+              className="font-body text-charcoal/80 text-sm sm:text-base leading-relaxed mt-4 prose prose-sm max-w-none"
               dangerouslySetInnerHTML={{ __html: descriptionHtml || description }}
             />
           </div>
@@ -209,14 +220,14 @@ export default function ProductDetails({
         {/* Tags */}
         {tags.length > 0 && (
           <div>
-            <h2 className="font-[family-name:var(--font-display)] text-varsity-blue italic text-sm mb-2">
+            <h2 className="font-display text-varsity-blue italic text-sm mb-2">
               Activities
             </h2>
             <div className="flex flex-wrap gap-2">
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-block bg-gold/15 text-varsity-blue text-xs tracking-wide px-2.5 py-1 rounded-sm font-[family-name:var(--font-body)]"
+                  className="inline-block bg-gold/15 text-varsity-blue text-xs tracking-wide px-2.5 py-1 rounded-sm font-body"
                 >
                   {tag}
                 </span>
@@ -228,7 +239,7 @@ export default function ProductDetails({
         {/* Variants — interactive */}
         {variants.length > 1 && (
           <div>
-            <h2 className="font-[family-name:var(--font-display)] text-varsity-blue italic text-sm mb-2">
+            <h2 className="font-display text-varsity-blue italic text-sm mb-2">
               Options
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -236,7 +247,7 @@ export default function ProductDetails({
                 <button
                   key={v.id}
                   onClick={() => v.availableForSale && setSelectedVariant(v)}
-                  className={`inline-block border text-xs tracking-wide px-3 py-1.5 rounded-sm font-[family-name:var(--font-body)] transition-all min-h-[36px] ${
+                  className={`inline-block border text-xs tracking-wide px-3 py-1.5 rounded-sm font-body transition-all min-h-[36px] ${
                     !v.availableForSale
                       ? 'border-charcoal/15 text-charcoal/40 line-through cursor-not-allowed'
                       : selectedVariant?.id === v.id
@@ -258,7 +269,7 @@ export default function ProductDetails({
             href={checkoutUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-block w-full text-center font-[family-name:var(--font-display)] tracking-[0.2em] uppercase text-sm py-3.5 px-8 rounded-sm transition-colors shadow-sm hover:shadow-md ${
+            className={`inline-block w-full text-center font-display tracking-[0.2em] uppercase text-sm py-3.5 px-8 rounded-sm transition-colors shadow-sm hover:shadow-md ${
               canBuy
                 ? 'bg-maroon hover:bg-maroon/90 text-cream'
                 : 'bg-charcoal/20 text-charcoal/50 cursor-not-allowed pointer-events-none'
@@ -275,7 +286,7 @@ export default function ProductDetails({
           href={checkoutUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={`block w-full text-center font-[family-name:var(--font-display)] tracking-[0.2em] uppercase text-sm py-3.5 rounded-sm transition-colors shadow-sm ${
+          className={`block w-full text-center font-display tracking-[0.2em] uppercase text-sm py-3.5 rounded-sm transition-colors shadow-sm ${
             canBuy
               ? 'bg-maroon hover:bg-maroon/90 text-cream'
               : 'bg-charcoal/20 text-charcoal/50 cursor-not-allowed pointer-events-none'
@@ -284,6 +295,61 @@ export default function ProductDetails({
           {canBuy ? `Claim Yours — $${displayPrice.toFixed(0)}` : 'Sold Out'}
         </a>
       </div>
+
+      {/* Related products */}
+      {relatedProducts && relatedProducts.length > 0 && (
+        <div className="col-span-full mt-12 sm:mt-16">
+          <hr className="yearbook-divider max-w-xs mx-auto mb-8" />
+          <div className="text-center mb-6">
+            <p className="font-display text-gold text-xs tracking-[0.3em] uppercase mb-1">
+              Also in the Yearbook
+            </p>
+            <h2 className="font-display text-varsity-blue text-xl sm:text-2xl italic">
+              More from the Club
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto">
+            {relatedProducts.map((rp, i) => {
+              const rotations = ['card-rotate-0', 'card-rotate-1', 'card-rotate-2', 'card-rotate-3'];
+              return (
+                <Link
+                  key={rp.handle}
+                  href={`/products/${rp.handle}`}
+                  className={`group block ${rotations[i % rotations.length]} transition-all duration-300 ease-out hover:scale-105 hover:rotate-0`}
+                >
+                  <div className="polaroid-card bg-white p-2 sm:p-3 pb-0 rounded-[2px]">
+                    <div className="relative aspect-square overflow-hidden bg-cream">
+                      {rp.imageUrl ? (
+                        <Image
+                          src={rp.imageUrl}
+                          alt={rp.imageAlt || rp.title}
+                          fill
+                          sizes="(max-width: 640px) 50vw, 250px"
+                          className="object-cover yearbook-image"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-cream">
+                          <span className="text-charcoal/30 font-display text-sm italic">
+                            No Photo
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="pt-3 pb-4 text-center">
+                      <h3 className="font-display text-charcoal text-xs sm:text-sm italic leading-tight line-clamp-2">
+                        {rp.title}
+                      </h3>
+                      <p className="font-body text-charcoal/60 text-xs mt-1 tracking-wide">
+                        ${rp.price.toFixed(0)}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
