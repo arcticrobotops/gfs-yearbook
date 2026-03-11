@@ -42,7 +42,8 @@ export default function ProductCard({ product, index }: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.handle}`}
-      className={`group block ${rotationClass} transition-all duration-300 ease-out hover:scale-105 hover:rotate-0`}
+      aria-label={`View ${product.title} — ${price === maxPrice ? `$${price.toFixed(0)}` : `$${price.toFixed(0)} to $${maxPrice.toFixed(0)}`}`}
+      className={`group block min-h-[44px] ${rotationClass} transition-all duration-300 ease-out hover:scale-105 hover:rotate-0`}
     >
       <div className="relative polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
         {/* Hover annotation badge — only shown for tagged products */}
@@ -80,10 +81,17 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           <h3 className="font-display text-charcoal text-sm sm:text-base italic leading-tight line-clamp-2">
             {product.title}
           </h3>
-          <p className="font-body text-charcoal/60 text-xs sm:text-sm mt-1.5 tracking-wide">
+          <p
+            className="font-body text-charcoal/60 text-xs sm:text-sm mt-1.5 tracking-wide"
+            aria-label={
+              price === maxPrice
+                ? `Price: $${price.toFixed(0)}`
+                : `Price: $${price.toFixed(0)} to $${maxPrice.toFixed(0)}`
+            }
+          >
             {price === maxPrice
               ? `$${price.toFixed(0)}`
-              : `$${price.toFixed(0)} - $${maxPrice.toFixed(0)}`}
+              : `$${price.toFixed(0)} – $${maxPrice.toFixed(0)}`}
           </p>
         </div>
       </div>

@@ -108,21 +108,25 @@ export default function FeedLayout({
       {/* Feed */}
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {error ? (
-          <div className="text-center py-20">
+          <div className="text-center py-20" role="alert">
             <p className="font-display text-maroon text-lg italic mb-3">
               Something went wrong loading this chapter.
             </p>
             <button
               onClick={() => handleCollectionChange(activeCollection)}
-              className="font-body text-varsity-blue text-sm underline underline-offset-2 hover:text-maroon transition-colors"
+              className="font-body text-varsity-blue text-sm underline underline-offset-2 hover:text-maroon transition-colors min-h-[44px] min-w-[44px] px-4 py-2"
             >
               Try again
             </button>
           </div>
         ) : loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10"
+            aria-busy="true"
+            aria-label="Loading products"
+          >
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={`skeleton-${i}`} className={`card-rotate-${i % 6}`}>
+              <div key={`skeleton-${i}`} className={`card-rotate-${i % 6}`} aria-hidden="true">
                 <div className="polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
                   <div className="aspect-square bg-charcoal/10 animate-pulse rounded-sm" />
                   <div className="pt-4 pb-5 sm:pt-5 sm:pb-6 flex flex-col items-center gap-2.5">
