@@ -5,15 +5,24 @@ import Footer from '@/components/Footer';
 export const revalidate = 60;
 
 export default async function Home() {
-  const [productsData, collections] = await Promise.all([
-    getProducts(50),
-    getCollections(),
-  ]);
+  let products = [];
+  let collections = [];
+
+  try {
+    const [productsData, collectionsData] = await Promise.all([
+      getProducts(50),
+      getCollections(),
+    ]);
+    products = productsData.products;
+    collections = collectionsData;
+  } catch (error) {
+    console.error('Failed to fetch from Shopify:', error);
+  }
 
   return (
     <div className="min-h-screen bg-cream overflow-x-hidden">
       <FeedLayout
-        initialProducts={productsData.products}
+        initialProducts={products}
         collections={collections}
       />
       <Footer />
