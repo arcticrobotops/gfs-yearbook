@@ -45,49 +45,58 @@ export default function TextMoment({ index }: TextMomentProps) {
 
   return (
     <div
-      className={`rounded-sm p-6 sm:p-8 text-center transition-all duration-300 ${
+      className={`rounded-[2px] p-6 sm:p-8 text-center transition-all duration-300 ${
         isBlue
           ? 'bg-varsity-blue text-cream'
           : 'bg-cream border-2 border-maroon/20 text-charcoal'
       }`}
     >
-      {/* SUPERLATIVES header */}
-      <div className="mb-4">
-        <span
-          className={`font-[family-name:var(--font-display)] text-xs tracking-[0.3em] uppercase font-semibold ${
-            isBlue ? 'text-gold' : 'text-gold'
+      {/* Gold double-border inset frame */}
+      <div
+        className={`border rounded-[1px] p-5 sm:p-6 ${
+          isBlue ? 'border-gold/30' : 'border-gold/40'
+        }`}
+      >
+        <div
+          className={`border rounded-[1px] p-4 sm:p-5 ${
+            isBlue ? 'border-gold/15' : 'border-gold/20'
           }`}
         >
-          Superlatives
-        </span>
-      </div>
+          {/* SUPERLATIVES header */}
+          <div className="mb-4">
+            <span className="font-[family-name:var(--font-display)] text-gold text-xs tracking-[0.3em] uppercase font-semibold">
+              Superlatives
+            </span>
+          </div>
 
-      {/* Star decoration */}
-      <div className={`text-2xl mb-3 ${isBlue ? 'text-gold' : 'text-maroon'}`}>
-        ★
-      </div>
+          {/* Star decoration */}
+          <div className={`text-2xl mb-3 ${isBlue ? 'text-gold' : 'text-maroon'}`}>
+            ★
+          </div>
 
-      {/* Superlative title */}
-      <h3
-        className={`font-[family-name:var(--font-display)] text-lg sm:text-xl italic leading-snug mb-3 ${
-          isBlue ? 'text-cream' : 'text-maroon'
-        }`}
-      >
-        &ldquo;{superlative.title}&rdquo;
-      </h3>
+          {/* Superlative title */}
+          <h3
+            className={`font-[family-name:var(--font-display)] text-lg sm:text-xl italic leading-snug mb-3 ${
+              isBlue ? 'text-cream' : 'text-maroon'
+            }`}
+          >
+            &ldquo;{superlative.title}&rdquo;
+          </h3>
 
-      {/* Attribution */}
-      <p
-        className={`font-[family-name:var(--font-body)] text-xs tracking-[0.1em] uppercase ${
-          isBlue ? 'text-cream/60' : 'text-charcoal/50'
-        }`}
-      >
-        {superlative.name}
-      </p>
+          {/* Attribution */}
+          <p
+            className={`font-[family-name:var(--font-body)] text-xs tracking-[0.1em] uppercase ${
+              isBlue ? 'text-cream/60' : 'text-charcoal/50'
+            }`}
+          >
+            {superlative.name}
+          </p>
 
-      {/* Bottom star */}
-      <div className={`text-2xl mt-3 ${isBlue ? 'text-gold' : 'text-maroon'}`}>
-        ★
+          {/* Bottom star */}
+          <div className={`text-2xl mt-3 ${isBlue ? 'text-gold' : 'text-maroon'}`}>
+            ★
+          </div>
+        </div>
       </div>
     </div>
   );
