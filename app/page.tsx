@@ -11,7 +11,7 @@ export default async function Home() {
   ]);
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-cream overflow-x-hidden">
       <FeedLayout
         initialProducts={productsData.products}
         collections={collections}

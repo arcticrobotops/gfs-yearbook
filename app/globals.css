@@ -61,6 +61,16 @@ body {
 .card-rotate-4 { transform: rotate(2deg); }
 .card-rotate-5 { transform: rotate(-1.5deg); }
 
+/* Reduce rotations on mobile to prevent overflow */
+@media (max-width: 640px) {
+  .card-rotate-0 { transform: rotate(0.5deg); }
+  .card-rotate-1 { transform: rotate(-0.8deg); }
+  .card-rotate-2 { transform: rotate(0.6deg); }
+  .card-rotate-3 { transform: rotate(-0.5deg); }
+  .card-rotate-4 { transform: rotate(0.8deg); }
+  .card-rotate-5 { transform: rotate(-0.6deg); }
+}
+
 /* Polaroid card: warm layered shadows */
 .polaroid-card {
   box-shadow:
