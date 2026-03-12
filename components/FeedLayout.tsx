@@ -174,10 +174,56 @@ export default function FeedLayout({
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="font-display text-charcoal/40 text-lg italic">
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '80px 24px',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{ color: '#C9A84C', fontSize: '24px', marginBottom: '16px' }}>&#9733;</div>
+              <p
+                style={{
+                  fontFamily: '"Playfair Display", Georgia, serif',
+                  fontSize: '1.25rem',
+                  color: '#333333',
+                  fontStyle: 'italic',
+                  marginBottom: '12px',
+                }}
+              >
                 This chapter is still being written.
               </p>
+              <p
+                style={{
+                  fontFamily: '"DM Sans", system-ui, sans-serif',
+                  fontSize: '0.875rem',
+                  color: '#666666',
+                  maxWidth: '20rem',
+                  lineHeight: '1.6',
+                }}
+              >
+                No items found in this collection. Try another or refresh the page.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                style={{
+                  fontFamily: '"DM Sans", system-ui, sans-serif',
+                  fontSize: '0.75rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.15em',
+                  padding: '12px 24px',
+                  border: '1px solid #333333',
+                  backgroundColor: 'transparent',
+                  color: '#333333',
+                  cursor: 'pointer',
+                  marginTop: '24px',
+                }}
+              >
+                Refresh
+              </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">

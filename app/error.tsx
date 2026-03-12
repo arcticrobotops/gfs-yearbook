@@ -4,21 +4,56 @@ import { useEffect } from 'react';
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {
   useEffect(() => {
-    console.error(error);
+    console.error('[GFS Yearbook] Error boundary caught:', error);
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-cream flex items-center justify-center px-6">
-      <div className="text-center max-w-md">
-        <h2 className="font-display text-2xl mb-4 text-charcoal">
+    <div
+      style={{
+        minHeight: '100vh',
+        backgroundColor: '#FFF8EE',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '24px',
+      }}
+    >
+      <div style={{ textAlign: 'center', maxWidth: '28rem' }}>
+        <div style={{ color: '#C9A84C', fontSize: '24px', marginBottom: '12px' }}>&#9733;</div>
+        <h2
+          style={{
+            fontFamily: '"Playfair Display", Georgia, serif',
+            fontSize: '1.5rem',
+            marginBottom: '16px',
+            color: '#333333',
+          }}
+        >
           Something went wrong
         </h2>
-        <p className="font-body text-sm text-charcoal/60 mb-8">
-          We hit a snag loading the page. This usually resolves on retry.
+        <p
+          style={{
+            fontFamily: '"DM Sans", system-ui, sans-serif',
+            fontSize: '0.875rem',
+            color: '#666666',
+            marginBottom: '32px',
+            lineHeight: '1.6',
+          }}
+        >
+          We hit a snag loading the yearbook. This usually resolves on retry.
         </p>
         <button
           onClick={() => reset()}
-          className="font-body text-xs uppercase tracking-widest px-6 py-3 border border-charcoal/20 hover:bg-charcoal hover:text-cream transition-colors duration-300"
+          style={{
+            fontFamily: '"DM Sans", system-ui, sans-serif',
+            fontSize: '0.75rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            padding: '12px 24px',
+            border: '1px solid #333333',
+            backgroundColor: 'transparent',
+            color: '#333333',
+            cursor: 'pointer',
+          }}
         >
           Try Again
         </button>
