@@ -1,6 +1,7 @@
 export default function PDPSkeleton() {
   return (
-    <main className="min-h-screen bg-cream animate-pulse">
+    <main className="min-h-screen bg-cream animate-pulse" aria-busy="true" aria-label="Loading product details">
+      <span className="sr-only">Loading product details...</span>
       <div className="max-w-5xl mx-auto px-4 pt-6 pb-2">
         <div className="h-4 w-32 bg-charcoal/8" />
       </div>

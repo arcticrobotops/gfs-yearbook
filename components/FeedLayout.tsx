@@ -23,10 +23,18 @@ export default function FeedLayout({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const gridRef = useRef<HTMLElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const handleCollectionChange = useCallback(async (handle: string) => {
     setActiveCollection(handle);
     setLoading(true);
+
+    // Abort any in-flight request to prevent race conditions
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
 
     // On mobile, scroll to grid so user sees the loading/results
     if (typeof window !== 'undefined' && window.innerWidth < 1024) {
@@ -36,11 +44,17 @@ export default function FeedLayout({
     try {
       setError(false);
       const params = handle !== 'all' ? `?collection=${handle}` : '';
-      const res = await fetch(`/api/products${params}`);
+      const res = await fetch(`/api/products${params}`, {
+        signal: controller.signal,
+      });
       if (!res.ok) throw new Error('Fetch failed');
       const data = await res.json();
       setProducts(data.products || []);
-    } catch {
+    } catch (err) {
+      // Don't set error state if the fetch was intentionally aborted
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        return;
+      }
       setError(true);
     } finally {
       setLoading(false);
@@ -58,20 +72,20 @@ export default function FeedLayout({
     let editorialCount = 0;
     let momentCount = 0;
 
-    products.forEach((product, i) => {
+    products.forEach((product, idx) => {
       // Insert editorial before every 4th product (indices 3, 7, 11...)
-      if (i > 0 && i % 4 === 3) {
+      if (idx > 0 && idx % 4 === 3) {
         items.push({ type: 'editorial', editorialIndex: editorialCount });
         editorialCount++;
       }
 
       // Insert text moment before every 7th product (indices 6, 13, 20...)
-      if (i > 0 && i % 7 === 6) {
+      if (idx > 0 && idx % 7 === 6) {
         items.push({ type: 'text-moment', momentIndex: momentCount });
         momentCount++;
       }
 
-      items.push({ type: 'product', product, productIndex: i });
+      items.push({ type: 'product', product, productIndex: idx });
     });
 
     return items;
@@ -128,94 +142,96 @@ export default function FeedLayout({
 
       {/* Feed */}
       <main id="main-content" ref={gridRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {error ? (
-          <div className="text-center py-20" role="alert">
-            <p className="font-display text-maroon text-lg italic mb-3">
-              Something went wrong loading this chapter.
-            </p>
-            <button
-              onClick={() => handleCollectionChange(activeCollection)}
-              className="font-body text-varsity-blue text-sm underline underline-offset-2 hover:text-maroon transition-colors min-h-[44px] min-w-[44px] px-4 py-2"
+        <div aria-live="polite">
+          {error ? (
+            <div className="text-center py-20" role="alert">
+              <p className="font-display text-maroon text-lg italic mb-3">
+                Something went wrong loading this chapter.
+              </p>
+              <button
+                onClick={() => handleCollectionChange(activeCollection)}
+                className="font-body text-varsity-blue text-sm underline underline-offset-2 hover:text-maroon transition-colors min-h-[44px] min-w-[44px] px-4 py-2"
+              >
+                Try again
+              </button>
+            </div>
+          ) : loading ? (
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10"
+              aria-busy="true"
+              aria-label="Loading products"
             >
-              Try again
-            </button>
-          </div>
-        ) : loading ? (
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10"
-            aria-busy="true"
-            aria-label="Loading products"
-          >
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={`skeleton-${i}`} className={`card-rotate-${i % 6}`} aria-hidden="true">
-                <div className="polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
-                  <div className="aspect-square bg-charcoal/10 animate-pulse rounded-sm" />
-                  <div className="pt-4 pb-5 sm:pt-5 sm:pb-6 flex flex-col items-center gap-2.5">
-                    <div className="h-4 w-3/4 bg-charcoal/10 animate-pulse rounded-sm" />
-                    <div className="h-3 w-1/3 bg-charcoal/10 animate-pulse rounded-sm" />
+              {Array.from({ length: 6 }).map((_, idx) => (
+                <div key={`skeleton-${idx}`} className={`card-rotate-${idx % 6}`} aria-hidden="true">
+                  <div className="polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
+                    <div className="aspect-square bg-charcoal/10 animate-pulse rounded-sm" />
+                    <div className="pt-4 pb-5 sm:pt-5 sm:pb-6 flex flex-col items-center gap-2.5">
+                      <div className="h-4 w-3/4 bg-charcoal/10 animate-pulse rounded-sm" />
+                      <div className="h-3 w-1/3 bg-charcoal/10 animate-pulse rounded-sm" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : products.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="font-display text-charcoal/40 text-lg italic">
-              This chapter is still being written.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-            {feedItems.map((item, i) => {
-              if (item.type === 'product') {
-                return (
-                  <ErrorBoundary key={`product-${item.product.id}`}>
-                    <div className="flex">
-                      <div className="w-full">
-                        <ProductCard
-                          product={item.product}
-                          index={item.productIndex}
-                        />
+              ))}
+            </div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="font-display text-charcoal/40 text-lg italic">
+                This chapter is still being written.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+              {feedItems.map((item) => {
+                if (item.type === 'product') {
+                  return (
+                    <ErrorBoundary key={`product-${item.product.id}`}>
+                      <div className="flex">
+                        <div className="w-full">
+                          <ProductCard
+                            product={item.product}
+                            index={item.productIndex}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </ErrorBoundary>
-                );
-              }
+                    </ErrorBoundary>
+                  );
+                }
 
-              if (item.type === 'editorial') {
-                const editorial = getEditorialByIndex(item.editorialIndex);
-                return (
-                  <ErrorBoundary key={`editorial-${item.editorialIndex}`}>
-                    <div className="sm:col-span-2 flex">
-                      <div className="w-full">
-                        <EditorialCard
-                          imageUrl={editorial.imageUrl}
-                          alt={editorial.alt}
-                          caption={editorial.caption}
-                          index={editorial.index}
-                        />
+                if (item.type === 'editorial') {
+                  const editorial = getEditorialByIndex(item.editorialIndex);
+                  return (
+                    <ErrorBoundary key={`editorial-${item.editorialIndex}`}>
+                      <div className="sm:col-span-2 flex">
+                        <div className="w-full">
+                          <EditorialCard
+                            imageUrl={editorial.imageUrl}
+                            alt={editorial.alt}
+                            caption={editorial.caption}
+                            index={editorial.index}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </ErrorBoundary>
-                );
-              }
+                    </ErrorBoundary>
+                  );
+                }
 
-              if (item.type === 'text-moment') {
-                return (
-                  <ErrorBoundary key={`moment-${item.momentIndex}`}>
-                    <div className="flex items-center">
-                      <div className="w-full">
-                        <TextMoment index={item.momentIndex} />
+                if (item.type === 'text-moment') {
+                  return (
+                    <ErrorBoundary key={`moment-${item.momentIndex}`}>
+                      <div className="flex items-center">
+                        <div className="w-full">
+                          <TextMoment index={item.momentIndex} />
+                        </div>
                       </div>
-                    </div>
-                  </ErrorBoundary>
-                );
-              }
+                    </ErrorBoundary>
+                  );
+                }
 
-              return null;
-            })}
-          </div>
-        )}
+                return null;
+              })}
+            </div>
+          )}
+        </div>
       </main>
     </>
   );

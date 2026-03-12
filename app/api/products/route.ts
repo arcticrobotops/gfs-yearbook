@@ -1,9 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getProducts } from '@/lib/shopify';
 
+// Validate collection handle: only allow alphanumeric, hyphens, underscores
+const VALID_COLLECTION_RE = /^[a-zA-Z0-9_-]+$/;
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const collection = searchParams.get('collection') || undefined;
+
+  // Validate collection parameter if provided
+  if (collection && !VALID_COLLECTION_RE.test(collection)) {
+    return NextResponse.json(
+      { error: 'Invalid collection parameter', products: [] },
+      { status: 400 }
+    );
+  }
 
   try {
     const data = await getProducts(50, undefined, collection);

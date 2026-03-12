@@ -2,8 +2,48 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 
 const PASSWORD = process.env.SITE_PASSWORD;
-const AUTH_SECRET = process.env.AUTH_SECRET || 'fallback-dev-secret';
 const COOKIE_NAME = 'site-auth';
+
+/**
+ * AUTH_SECRET: Used by the Node.js `crypto` module (route handler runs in the
+ * Node runtime). The middleware uses the Web Crypto API (`crypto.subtle`) in the
+ * Edge runtime, so each file independently derives the HMAC key — but they must
+ * share the same AUTH_SECRET value to produce compatible signatures.
+ */
+function getAuthSecret(): string {
+  const secret = process.env.AUTH_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('AUTH_SECRET environment variable is required in production');
+    }
+    // Only allow fallback in development
+    return 'fallback-dev-secret';
+  }
+  return secret;
+}
+
+/* ------------------------------------------------------------------ */
+/*  In-memory rate limiter — max 5 attempts per 60 seconds per IP     */
+/* ------------------------------------------------------------------ */
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  entry.count++;
+  if (entry.count > RATE_LIMIT_MAX) {
+    return true;
+  }
+  return false;
+}
 
 /** Validate that `next` is a safe relative path (no open redirect). */
 function sanitizeNext(raw: string | null): string {
@@ -16,7 +56,7 @@ function sanitizeNext(raw: string | null): string {
 /** Create an HMAC-signed auth token. */
 function signToken(): string {
   const payload = `authenticated:${Date.now()}`;
-  const hmac = crypto.createHmac('sha256', AUTH_SECRET).update(payload).digest('hex');
+  const hmac = crypto.createHmac('sha256', getAuthSecret()).update(payload).digest('hex');
   return `${payload}.${hmac}`;
 }
 
@@ -26,7 +66,7 @@ export function verifyToken(token: string): boolean {
   if (lastDot === -1) return false;
   const payload = token.substring(0, lastDot);
   const signature = token.substring(lastDot + 1);
-  const expected = crypto.createHmac('sha256', AUTH_SECRET).update(payload).digest('hex');
+  const expected = crypto.createHmac('sha256', getAuthSecret()).update(payload).digest('hex');
   try {
     return crypto.timingSafeEqual(Buffer.from(signature, 'hex'), Buffer.from(expected, 'hex'));
   } catch {
@@ -52,6 +92,32 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    /* ---- CSRF: Origin header validation ---- */
+    const origin = request.headers.get('origin');
+    const host = request.headers.get('host');
+    if (origin && host) {
+      const originHost = new URL(origin).host;
+      if (originHost !== host) {
+        return new NextResponse(loginHTML('/', 'Invalid request origin'), {
+          status: 403,
+          headers: { 'Content-Type': 'text/html' },
+        });
+      }
+    }
+
+    /* ---- Rate limiting ---- */
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
+      'unknown';
+
+    if (isRateLimited(ip)) {
+      return new NextResponse(loginHTML('/', 'Too many attempts. Please wait and try again.'), {
+        status: 429,
+        headers: { 'Content-Type': 'text/html', 'Retry-After': '60' },
+      });
+    }
+
     if (!PASSWORD) {
       return new NextResponse(loginHTML('/', 'Site password is not configured'), {
         status: 500,
@@ -123,7 +189,7 @@ function loginHTML(next: string, error?: string) {
       font-size: 11px;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: #666;
+      color: #999;
       margin-bottom: 2rem;
     }
     h1 {
@@ -172,7 +238,7 @@ function loginHTML(next: string, error?: string) {
     ${safeError ? `<p class="error">${safeError}</p>` : ''}
     <form method="POST" action="/api/auth">
       <input type="hidden" name="next" value="${safeNext}" />
-      <input type="password" name="password" placeholder="Password" autofocus required />
+      <input type="password" name="password" placeholder="Password" autofocus required autocomplete="current-password" />
       <button type="submit">Enter</button>
     </form>
   </div>

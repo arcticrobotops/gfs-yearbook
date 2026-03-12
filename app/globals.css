@@ -157,11 +157,36 @@ body {
   display: none;
 }
 
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
+/* Smooth scroll — only for users who have no motion preference */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 .safe-area-bottom {
   padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+/* Accessibility: respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .card-rotate-0,
+  .card-rotate-1,
+  .card-rotate-2,
+  .card-rotate-3,
+  .card-rotate-4,
+  .card-rotate-5 {
+    transform: none !important;
+  }
 }

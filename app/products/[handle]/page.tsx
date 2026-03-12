@@ -23,7 +23,14 @@ export async function generateMetadata({
   const product = await getProductByHandle(handle);
   if (!product) return { title: 'Member Not Found' };
 
+  const siteUrl = process.env.SITE_URL || 'https://ghostforestsurfclub.com';
   const image = product.images.edges[0]?.node;
+
+  // Fallback OG image when product has no images
+  const ogImages = image
+    ? [{ url: image.url, width: image.width, height: image.height, alt: product.title }]
+    : [{ url: `${siteUrl}/og-default.png`, width: 1200, height: 630, alt: product.title }];
+
   return {
     title: `${product.title} — GFS Yearbook`,
     description: product.description?.slice(0, 160) || `Check out ${product.title} from Ghost Forest Surf Club.`,
@@ -33,7 +40,11 @@ export async function generateMetadata({
     openGraph: {
       title: product.title,
       description: product.description?.slice(0, 160),
-      images: image ? [{ url: image.url, width: image.width, height: image.height, alt: product.title }] : [],
+      images: ogImages,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: ogImages.map((img) => img.url),
     },
   };
 }
@@ -114,6 +125,12 @@ export default async function ProductPage({
     name: product.title,
     description: product.description,
     image: images[0]?.url,
+    url: `${siteUrl}/products/${product.handle}`,
+    sku: product.handle,
+    brand: {
+      '@type': 'Brand',
+      name: 'Ghost Forest Surf Club',
+    },
     offers: {
       '@type': 'AggregateOffer',
       lowPrice: price.toFixed(2),

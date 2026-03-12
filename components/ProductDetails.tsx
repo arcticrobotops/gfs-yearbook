@@ -5,12 +5,54 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { formatPrice } from '@/lib/utils';
 
-/** Strip <script> tags and on* event attributes from HTML. */
+/* ------------------------------------------------------------------ */
+/*  Allowlist-based HTML sanitizer                                     */
+/*  Permits: p, br, strong, em, b, i, ul, ol, li, a, h2, h3, h4,    */
+/*           span, div. Only href (http/https) allowed on <a>.         */
+/*  Strips ALL other tags and attributes.                              */
+/* ------------------------------------------------------------------ */
+const ALLOWED_TAGS = new Set([
+  'p', 'br', 'strong', 'em', 'b', 'i', 'ul', 'ol', 'li',
+  'a', 'h2', 'h3', 'h4', 'span', 'div',
+]);
+
 function sanitizeHtml(html: string): string {
-  return html
-    .replace(/<script[\s>][\s\S]*?<\/script>/gi, '')
-    .replace(/<script[\s>][\s\S]*$/gi, '')
-    .replace(/\bon\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]*)/gi, '');
+  // Replace tags: keep only those on the allowlist, strip attributes except href on <a>
+  return html.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^>]*)?\/?>/gi, (match, tagName: string, attrs: string) => {
+    const tag = tagName.toLowerCase();
+
+    if (!ALLOWED_TAGS.has(tag)) {
+      return ''; // strip disallowed tags entirely
+    }
+
+    // Closing tag — no attributes
+    if (match.startsWith('</')) {
+      return `</${tag}>`;
+    }
+
+    // Self-closing br
+    if (tag === 'br') {
+      return '<br />';
+    }
+
+    // For <a>, extract and validate href
+    if (tag === 'a' && attrs) {
+      const hrefMatch = attrs.match(/\bhref\s*=\s*(?:"([^"]*)"|'([^']*)')/i);
+      if (hrefMatch) {
+        const href = hrefMatch[1] ?? hrefMatch[2];
+        if (/^https?:\/\//i.test(href)) {
+          // Escape any quotes in the href value
+          const safeHref = href.replace(/"/g, '&quot;');
+          return `<a href="${safeHref}">`;
+        }
+      }
+      // Anchor without valid href — render without href
+      return '<a>';
+    }
+
+    // All other allowed tags — strip all attributes
+    return `<${tag}>`;
+  });
 }
 
 interface Variant {
@@ -125,6 +167,7 @@ export default function ProductDetails({
               <button
                 onClick={() => setActiveImage(heroImage)}
                 aria-label={`View main photo of ${title}`}
+                aria-current={activeImage === heroImage ? 'true' : undefined}
                 className="polaroid-card bg-white p-1.5 rounded-[2px] w-24 sm:w-28 card-rotate-0 transition-transform duration-300 hover:rotate-0 cursor-pointer ring-2 ring-transparent hover:ring-gold"
               >
                 <div className="relative aspect-square overflow-hidden bg-cream">
@@ -143,6 +186,7 @@ export default function ProductDetails({
                 key={img.url}
                 onClick={() => setActiveImage(img)}
                 aria-label={`View photo ${i + 2} of ${title}`}
+                aria-current={activeImage === img ? 'true' : undefined}
                 className={`polaroid-card bg-white p-1.5 rounded-[2px] w-24 sm:w-28 card-rotate-${i % 6} transition-transform duration-300 hover:rotate-0 cursor-pointer ring-2 ${
                   activeImage === img ? 'ring-gold' : 'ring-transparent hover:ring-gold/50'
                 }`}

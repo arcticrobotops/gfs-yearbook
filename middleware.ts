@@ -1,7 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const COOKIE_NAME = 'site-auth';
-const AUTH_SECRET = process.env.AUTH_SECRET || 'fallback-dev-secret';
+const TOKEN_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+/**
+ * AUTH_SECRET: Used by the Web Crypto API (`crypto.subtle`) in the Edge
+ * runtime. The route handler (`app/api/auth/route.ts`) uses Node.js `crypto`
+ * in the Node runtime, so each file has its own HMAC helper — but both must
+ * use the same AUTH_SECRET value to produce compatible signatures.
+ */
+function getAuthSecret(): string {
+  const secret = process.env.AUTH_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('AUTH_SECRET environment variable is required in production');
+    }
+    // Only allow fallback in development
+    return 'fallback-dev-secret';
+  }
+  return secret;
+}
 
 async function hmacSign(payload: string, secret: string): Promise<string> {
   const enc = new TextEncoder();
@@ -27,14 +45,23 @@ function timingSafeEqual(a: string, b: string): boolean {
   return result === 0;
 }
 
-async function verifyToken(token: string): Promise<boolean> {
+async function verifySignedToken(token: string): Promise<boolean> {
   const lastDot = token.lastIndexOf('.');
   if (lastDot === -1) return false;
   const payload = token.substring(0, lastDot);
   const signature = token.substring(lastDot + 1);
   try {
-    const expected = await hmacSign(payload, AUTH_SECRET);
-    return timingSafeEqual(signature, expected);
+    const expected = await hmacSign(payload, getAuthSecret());
+    if (!timingSafeEqual(signature, expected)) return false;
+
+    // Parse timestamp from payload format "authenticated:<timestamp>" and reject
+    // tokens older than 30 days
+    const parts = payload.split(':');
+    const timestamp = parseInt(parts[1], 10);
+    if (isNaN(timestamp)) return false;
+    if (Date.now() - timestamp > TOKEN_MAX_AGE_MS) return false;
+
+    return true;
   } catch {
     return false;
   }
@@ -48,7 +75,7 @@ export async function middleware(request: NextRequest) {
 
   // Check for auth cookie with HMAC verification
   const authCookie = request.cookies.get(COOKIE_NAME);
-  if (authCookie?.value && (await verifyToken(authCookie.value))) {
+  if (authCookie?.value && (await verifySignedToken(authCookie.value))) {
     return NextResponse.next();
   }
 

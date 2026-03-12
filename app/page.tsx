@@ -21,8 +21,26 @@ export default async function Home() {
     console.error('Failed to fetch from Shopify:', error);
   }
 
+  const siteUrl = process.env.SITE_URL || 'https://ghostforestsurfclub.com';
+
+  const webSiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Ghost Forest Surf Club Yearbook',
+    url: siteUrl,
+    description: 'A collection of memories, gear, and the things that keep us paddling out.',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Ghost Forest Surf Club',
+    },
+  };
+
   return (
     <div className="min-h-screen bg-cream">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd).replace(/</g, '\\u003c') }}
+      />
       <ErrorBoundary>
         <FeedLayout
           initialProducts={products}
