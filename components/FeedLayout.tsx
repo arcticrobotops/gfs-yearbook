@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 import Navbar from './Navbar';
@@ -22,10 +22,16 @@ export default function FeedLayout({
   const [activeCollection, setActiveCollection] = useState('all');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const gridRef = useRef<HTMLElement>(null);
 
   const handleCollectionChange = useCallback(async (handle: string) => {
     setActiveCollection(handle);
     setLoading(true);
+
+    // On mobile, scroll to grid so user sees the loading/results
+    if (window.innerWidth < 1024) {
+      gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     try {
       setError(false);
@@ -114,7 +120,7 @@ export default function FeedLayout({
       )}
 
       {/* Feed */}
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main ref={gridRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {error ? (
           <div className="text-center py-20" role="alert">
             <p className="font-display text-maroon text-lg italic mb-3">
