@@ -77,7 +77,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         </div>
 
         {/* Caption area (thick Polaroid bottom strip) */}
-        <div className="pt-4 pb-5 sm:pt-5 sm:pb-6 text-center">
+        <div className="pt-4 pb-5 sm:pt-5 sm:pb-6 px-3 text-center">
           <h3 className="font-display text-charcoal text-sm sm:text-base italic leading-tight line-clamp-2">
             {product.title}
           </h3>

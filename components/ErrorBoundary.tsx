@@ -32,12 +32,12 @@ export default class ErrorBoundary extends Component<Props, State> {
             <p className="font-display text-varsity-blue text-sm italic mb-1">
               This section didn&apos;t load correctly.
             </p>
-            <p className="font-body text-charcoal/40 text-xs">
+            <p className="font-body text-charcoal/40 text-[13px]">
               Something went wrong.
             </p>
             <button
               onClick={() => this.setState({ hasError: false })}
-              className="mt-4 font-body text-varsity-blue text-xs underline underline-offset-2 hover:text-maroon transition-colors"
+              className="mt-4 font-body text-varsity-blue text-[13px] underline underline-offset-2 hover:text-maroon transition-colors"
             >
               Try again
             </button>

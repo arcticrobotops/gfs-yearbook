@@ -247,7 +247,7 @@ export default function ProductDetails({
                 <button
                   key={v.id}
                   onClick={() => v.availableForSale && setSelectedVariant(v)}
-                  className={`inline-block border text-xs tracking-wide px-3 py-1.5 rounded-sm font-body transition-colors min-h-[44px] ${
+                  className={`inline-block border text-[13px] tracking-wide px-3 py-1.5 rounded-sm font-body transition-colors min-h-[44px] ${
                     !v.availableForSale
                       ? 'border-charcoal/15 text-charcoal/40 line-through cursor-not-allowed'
                       : selectedVariant?.id === v.id
@@ -282,18 +282,23 @@ export default function ProductDetails({
 
       {/* Mobile sticky CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-cream border-t border-gold/20 px-4 py-4 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] safe-area-bottom">
-        <a
-          href={checkoutUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`block w-full text-center font-display tracking-[0.1em] sm:tracking-[0.2em] uppercase text-sm py-3.5 rounded-sm transition-colors shadow-sm ${
-            canBuy
-              ? 'bg-maroon hover:bg-maroon/90 text-cream'
-              : 'bg-charcoal/20 text-charcoal/50 cursor-not-allowed pointer-events-none'
-          }`}
-        >
-          {canBuy ? `Claim Yours — $${displayPrice.toFixed(0)}` : 'Sold Out'}
-        </a>
+        <div className="flex items-center justify-between gap-3">
+          <p className="font-display text-varsity-blue italic text-sm max-w-[180px] truncate">
+            {title}
+          </p>
+          <a
+            href={checkoutUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`shrink-0 text-center font-display tracking-[0.1em] sm:tracking-[0.2em] uppercase text-sm py-3.5 px-6 rounded-sm transition-colors shadow-sm ${
+              canBuy
+                ? 'bg-maroon hover:bg-maroon/90 text-cream'
+                : 'bg-charcoal/20 text-charcoal/50 cursor-not-allowed pointer-events-none'
+            }`}
+          >
+            {canBuy ? `Claim Yours — $${displayPrice.toFixed(0)}` : 'Sold Out'}
+          </a>
+        </div>
       </div>
 
       {/* Related products */}
@@ -335,7 +340,7 @@ export default function ProductDetails({
                         </div>
                       )}
                     </div>
-                    <div className="pt-3 pb-4 text-center">
+                    <div className="pt-3 pb-4 px-3 text-center">
                       <h3 className="font-display text-charcoal text-xs sm:text-sm italic leading-tight line-clamp-2">
                         {rp.title}
                       </h3>
