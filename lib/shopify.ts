@@ -8,32 +8,59 @@ function requireEnv(name: string): string {
   return value;
 }
 
-const domain = requireEnv('SHOPIFY_STORE_DOMAIN');
-const storefrontAccessToken = requireEnv('SHOPIFY_STOREFRONT_ACCESS_TOKEN');
+let _domain: string | undefined;
+let _token: string | undefined;
 
-const endpoint = `https://${domain}/api/2024-10/graphql.json`;
+function getDomain() {
+  if (!_domain) _domain = requireEnv('SHOPIFY_STORE_DOMAIN');
+  return _domain;
+}
+
+function getToken() {
+  if (!_token) _token = requireEnv('SHOPIFY_STOREFRONT_ACCESS_TOKEN');
+  return _token;
+}
+
+const MAX_RETRIES = 3;
+const BASE_DELAY_MS = 500;
 
 async function shopifyFetch<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
-    },
-    body: JSON.stringify({ query, variables }),
-  });
+  const endpoint = `https://${getDomain()}/api/2024-10/graphql.json`;
 
-  if (!response.ok) {
-    throw new Error(`Shopify API error: ${response.status} ${response.statusText}`);
+  let lastError: Error | undefined;
+
+  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': getToken(),
+        },
+        body: JSON.stringify({ query, variables }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Shopify API error: ${response.status} ${response.statusText}`);
+      }
+
+      const json = await response.json();
+
+      if (json.errors) {
+        throw new Error(`Shopify GraphQL error: ${JSON.stringify(json.errors)}`);
+      }
+
+      return json.data;
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (attempt < MAX_RETRIES - 1) {
+        const delay = BASE_DELAY_MS * Math.pow(2, attempt);
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
   }
 
-  const json = await response.json();
-
-  if (json.errors) {
-    throw new Error(`Shopify GraphQL error: ${JSON.stringify(json.errors)}`);
-  }
-
-  return json.data;
+  throw lastError!;
 }
 
 const PRODUCTS_QUERY = `

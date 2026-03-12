@@ -26,10 +26,9 @@ export async function generateMetadata({
   const siteUrl = process.env.SITE_URL || 'https://ghostforestsurfclub.com';
   const image = product.images.edges[0]?.node;
 
-  // Fallback OG image when product has no images
   const ogImages = image
     ? [{ url: image.url, width: image.width, height: image.height, alt: product.title }]
-    : [{ url: `${siteUrl}/og-default.png`, width: 1200, height: 630, alt: product.title }];
+    : [];
 
   return {
     title: `${product.title} — GFS Yearbook`,

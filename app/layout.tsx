@@ -34,10 +34,10 @@ export const metadata: Metadata = {
     siteName: "Ghost Forest Surf Club",
     images: [
       {
-        url: '/og-image.jpg',
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: 'Ghost Forest Surf Club Annual — Vol. I',
+        alt: "Ghost Forest Surf Club Annual — Vol. I",
       },
     ],
   },
@@ -45,6 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ghost Forest Surf Club Annual — Vol. I",
     description: "The official yearbook of Ghost Forest Surf Club. Neskowin, Oregon. Volume I.",
+    images: ["/og-image.png"],
   },
 };
 

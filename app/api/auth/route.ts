@@ -189,7 +189,7 @@ function loginHTML(next: string, error?: string) {
       font-size: 11px;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: #999;
+      color: #a0a0a0;
       margin-bottom: 2rem;
     }
     h1 {
@@ -235,7 +235,7 @@ function loginHTML(next: string, error?: string) {
   <div class="container">
     <p class="brand">Ghost Forest Surf Club</p>
     <h1>Enter Password</h1>
-    ${safeError ? `<p class="error">${safeError}</p>` : ''}
+    <div id="auth-error" class="error" role="alert" aria-live="assertive" aria-atomic="true"${safeError ? '' : ' style="display:none"'}>${safeError ?? ''}</div>
     <form method="POST" action="/api/auth">
       <input type="hidden" name="next" value="${safeNext}" />
       <input type="password" name="password" placeholder="Password" autofocus required autocomplete="current-password" />
