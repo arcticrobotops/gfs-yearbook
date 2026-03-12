@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import Image from 'next/image';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 import Navbar from './Navbar';
 import ProductCard from './ProductCard';
@@ -78,9 +79,13 @@ export default function FeedLayout({
       {/* Hero section with first product image */}
       {products.length > 0 && products[0].images.edges[0]?.node && (
         <div className="relative h-[60vh] sm:h-[70vh] overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${products[0].images.edges[0].node.url})` }}
+          <Image
+            src={products[0].images.edges[0].node.url}
+            alt={products[0].images.edges[0].node.altText || products[0].title}
+            fill
+            sizes="100vw"
+            className="object-cover object-center"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-varsity-blue/60 via-varsity-blue/40 to-cream" />
           <div className="relative h-full flex items-end justify-center pb-12 sm:pb-16 px-4">
