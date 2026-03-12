@@ -1,7 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
 
 const PASSWORD = process.env.SITE_PASSWORD;
+const AUTH_SECRET = process.env.AUTH_SECRET || 'fallback-dev-secret';
 const COOKIE_NAME = 'site-auth';
+
+/** Validate that `next` is a safe relative path (no open redirect). */
+function sanitizeNext(raw: string | null): string {
+  if (!raw) return '/';
+  // Must start with `/` and must NOT contain `//` (protocol-relative)
+  if (!raw.startsWith('/') || raw.includes('//')) return '/';
+  return raw;
+}
+
+/** Create an HMAC-signed auth token. */
+function signToken(): string {
+  const payload = `authenticated:${Date.now()}`;
+  const hmac = crypto.createHmac('sha256', AUTH_SECRET).update(payload).digest('hex');
+  return `${payload}.${hmac}`;
+}
+
+/** Verify an HMAC-signed auth token. */
+export function verifyToken(token: string): boolean {
+  const lastDot = token.lastIndexOf('.');
+  if (lastDot === -1) return false;
+  const payload = token.substring(0, lastDot);
+  const signature = token.substring(lastDot + 1);
+  const expected = crypto.createHmac('sha256', AUTH_SECRET).update(payload).digest('hex');
+  try {
+    return crypto.timingSafeEqual(Buffer.from(signature, 'hex'), Buffer.from(expected, 'hex'));
+  } catch {
+    return false;
+  }
+}
 
 function escapeHtml(str: string): string {
   return str
@@ -13,7 +44,7 @@ function escapeHtml(str: string): string {
 }
 
 export async function GET(request: NextRequest) {
-  const next = request.nextUrl.searchParams.get('next') || '/';
+  const next = sanitizeNext(request.nextUrl.searchParams.get('next'));
   return new NextResponse(loginHTML(next), {
     headers: { 'Content-Type': 'text/html' },
   });
@@ -21,13 +52,27 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!PASSWORD) {
+      return new NextResponse(loginHTML('/', 'Site password is not configured'), {
+        status: 500,
+        headers: { 'Content-Type': 'text/html' },
+      });
+    }
+
     const formData = await request.formData();
     const password = formData.get('password') as string;
-    const next = formData.get('next') as string || '/';
+    const next = sanitizeNext(formData.get('next') as string);
 
-    if (PASSWORD && password === PASSWORD) {
+    // Timing-safe comparison
+    const passwordBuffer = Buffer.from(password || '');
+    const expectedBuffer = Buffer.from(PASSWORD);
+    const isValid =
+      passwordBuffer.length === expectedBuffer.length &&
+      crypto.timingSafeEqual(passwordBuffer, expectedBuffer);
+
+    if (isValid) {
       const response = NextResponse.redirect(new URL(next, request.url));
-      response.cookies.set(COOKIE_NAME, 'authenticated', {
+      response.cookies.set(COOKIE_NAME, signToken(), {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',

@@ -22,7 +22,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-cream overflow-x-hidden">
+    <div className="min-h-screen bg-cream">
       <ErrorBoundary>
         <FeedLayout
           initialProducts={products}

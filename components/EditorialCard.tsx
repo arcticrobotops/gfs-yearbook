@@ -79,6 +79,8 @@ export default function EditorialCard({
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 66vw"
             className="object-cover yearbook-image"
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZThlNGRmIi8+PC9zdmc+"
           />
         </div>
 

@@ -29,7 +29,7 @@ export default function FeedLayout({
     setLoading(true);
 
     // On mobile, scroll to grid so user sees the loading/results
-    if (window.innerWidth < 1024) {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
       gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -97,11 +97,13 @@ export default function FeedLayout({
             sizes="100vw"
             className="object-cover object-center"
             priority
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMmE0MCIvPjwvc3ZnPg=="
           />
           <div className="absolute inset-0 bg-gradient-to-b from-varsity-blue/60 via-varsity-blue/40 to-cream" />
           <div className="relative h-full flex items-end justify-center pb-12 sm:pb-16 px-4">
             <div className="text-center">
-              <p className="font-display text-gold text-xs tracking-[0.2em] sm:tracking-[0.4em] uppercase mb-3 drop-shadow-sm">
+              <p className="font-display text-gold text-xs tracking-[0.2em] sm:tracking-[0.4em] uppercase mb-3 drop-shadow-sm font-semibold">
                 Neskowin, Oregon
               </p>
               <h1 className="font-display text-cream text-2xl sm:text-3xl lg:text-5xl italic leading-tight drop-shadow-md">

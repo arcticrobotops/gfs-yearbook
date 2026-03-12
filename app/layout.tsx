@@ -20,15 +20,26 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ghostforestsurfclub.com'),
+  metadataBase: new URL(process.env.SITE_URL || 'https://ghostforestsurfclub.com'),
   title: "Ghost Forest Surf Club Annual — Vol. I",
   description:
     "The official yearbook of Ghost Forest Surf Club. Neskowin, Oregon. Volume I.",
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: "Ghost Forest Surf Club Annual — Vol. I",
     description:
       "The official yearbook of Ghost Forest Surf Club. Neskowin, Oregon. Volume I.",
     siteName: "Ghost Forest Surf Club",
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Ghost Forest Surf Club Annual — Vol. I',
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",

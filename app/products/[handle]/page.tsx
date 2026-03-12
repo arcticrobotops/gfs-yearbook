@@ -27,6 +27,9 @@ export async function generateMetadata({
   return {
     title: `${product.title} — GFS Yearbook`,
     description: product.description?.slice(0, 160) || `Check out ${product.title} from Ghost Forest Surf Club.`,
+    alternates: {
+      canonical: `/products/${handle}`,
+    },
     openGraph: {
       title: product.title,
       description: product.description?.slice(0, 160),
@@ -74,9 +77,10 @@ export default async function ProductPage({
   const maxPrice = parseFloat(product.priceRange.maxVariantPrice.amount);
   const collection = product.collections.edges[0]?.node;
   const superlative = superlatives[hashIndex(product.handle) % superlatives.length];
+  const siteUrl = process.env.SITE_URL || 'https://ghostforestsurfclub.com';
   const shopUrl =
     product.onlineStoreUrl ||
-    `https://ghostforestsurfclub.com/products/${product.handle}`;
+    `${siteUrl}/products/${product.handle}`;
 
   const variants = product.variants.edges.map(({ node }) => ({
     id: node.id,
@@ -125,7 +129,7 @@ export default async function ProductPage({
     <main className="min-h-screen bg-cream pb-20 md:pb-0">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
       {/* Back nav */}
       <div className="max-w-5xl mx-auto px-4 pt-6 pb-2">
@@ -141,7 +145,7 @@ export default async function ProductPage({
       <article className="max-w-5xl mx-auto px-4 pb-20">
         {/* Header strip */}
         <div className="text-center mb-8">
-          <p className="font-display text-gold tracking-[0.25em] uppercase text-xs sm:text-sm mb-1">
+          <p className="font-display text-gold tracking-[0.25em] uppercase text-xs sm:text-sm mb-1 font-semibold">
             Member Profile
           </p>
           <h1 className="font-display text-varsity-blue text-3xl sm:text-4xl md:text-5xl italic leading-tight">

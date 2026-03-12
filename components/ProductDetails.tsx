@@ -5,6 +5,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { formatPrice } from '@/lib/utils';
 
+/** Strip <script> tags and on* event attributes from HTML. */
+function sanitizeHtml(html: string): string {
+  return html
+    .replace(/<script[\s>][\s\S]*?<\/script>/gi, '')
+    .replace(/<script[\s>][\s\S]*$/gi, '')
+    .replace(/\bon\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]*)/gi, '');
+}
+
 interface Variant {
   id: string;
   title: string;
@@ -116,6 +124,7 @@ export default function ProductDetails({
             {heroImage && activeImage !== heroImage && (
               <button
                 onClick={() => setActiveImage(heroImage)}
+                aria-label={`View main photo of ${title}`}
                 className="polaroid-card bg-white p-1.5 rounded-[2px] w-24 sm:w-28 card-rotate-0 transition-transform duration-300 hover:rotate-0 cursor-pointer ring-2 ring-transparent hover:ring-gold"
               >
                 <div className="relative aspect-square overflow-hidden bg-cream">
@@ -133,6 +142,7 @@ export default function ProductDetails({
               <button
                 key={img.url}
                 onClick={() => setActiveImage(img)}
+                aria-label={`View photo ${i + 2} of ${title}`}
                 className={`polaroid-card bg-white p-1.5 rounded-[2px] w-24 sm:w-28 card-rotate-${i % 6} transition-transform duration-300 hover:rotate-0 cursor-pointer ring-2 ${
                   activeImage === img ? 'ring-gold' : 'ring-transparent hover:ring-gold/50'
                 }`}
@@ -214,7 +224,7 @@ export default function ProductDetails({
             </h2>
             <div
               className="font-body text-charcoal/80 text-sm sm:text-base leading-relaxed mt-4 prose prose-sm max-w-none"
-              dangerouslySetInnerHTML={{ __html: descriptionHtml || description }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(descriptionHtml || description) }}
             />
           </div>
         )}
@@ -309,7 +319,7 @@ export default function ProductDetails({
         <div className="col-span-full mt-12 sm:mt-16">
           <hr className="yearbook-divider max-w-xs mx-auto mb-8" />
           <div className="text-center mb-6">
-            <p className="font-display text-gold text-xs tracking-[0.15em] sm:tracking-[0.3em] uppercase mb-1">
+            <p className="font-display text-gold text-xs tracking-[0.15em] sm:tracking-[0.3em] uppercase mb-1 font-semibold">
               Also in the Yearbook
             </p>
             <h2 className="font-display text-varsity-blue text-xl sm:text-2xl italic">
@@ -322,6 +332,7 @@ export default function ProductDetails({
                 <Link
                   key={rp.handle}
                   href={`/products/${rp.handle}`}
+                  aria-label={`View ${rp.title}`}
                   className={`group block ${rotations[i % rotations.length]} transition-transform duration-300 ease-out hover:scale-105 hover:rotate-0`}
                 >
                   <div className="polaroid-card bg-white p-2 sm:p-3 pb-0 rounded-[2px]">
