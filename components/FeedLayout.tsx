@@ -85,7 +85,7 @@ export default function FeedLayout({
           <div className="absolute inset-0 bg-gradient-to-b from-varsity-blue/60 via-varsity-blue/40 to-cream" />
           <div className="relative h-full flex items-end justify-center pb-12 sm:pb-16 px-4">
             <div className="text-center">
-              <p className="font-display text-gold text-xs tracking-[0.4em] uppercase mb-3 drop-shadow-sm">
+              <p className="font-display text-gold text-xs tracking-[0.2em] sm:tracking-[0.4em] uppercase mb-3 drop-shadow-sm">
                 Neskowin, Oregon
               </p>
               <h2 className="font-display text-cream text-3xl sm:text-4xl lg:text-5xl italic leading-tight drop-shadow-md">
@@ -94,7 +94,7 @@ export default function FeedLayout({
               <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4">
                 <span className="text-gold text-sm sm:text-base drop-shadow-sm">&#9733;</span>
                 <div className="w-8 sm:w-12 h-px bg-gold/60" />
-                <span className="font-display text-gold text-xs tracking-[0.3em] uppercase drop-shadow-sm">
+                <span className="font-display text-gold text-xs tracking-[0.15em] sm:tracking-[0.3em] uppercase drop-shadow-sm">
                   Vol. I
                 </span>
                 <div className="w-8 sm:w-12 h-px bg-gold/60" />

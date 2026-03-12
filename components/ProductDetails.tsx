@@ -99,7 +99,7 @@ export default function ProductDetails({
                 />
               </div>
               <div className="py-4 sm:py-5 text-center">
-                <p className="font-display text-charcoal/50 text-xs italic">
+                <p className="font-display text-charcoal/50 text-[13px] italic">
                   Official Club Photo
                 </p>
               </div>
@@ -227,7 +227,7 @@ export default function ProductDetails({
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-block bg-gold/15 text-varsity-blue text-xs tracking-wide px-2.5 py-1 rounded-sm font-body"
+                  className="inline-block bg-gold/15 text-varsity-blue text-[13px] tracking-wide px-2.5 py-1 rounded-sm font-body"
                 >
                   {tag}
                 </span>

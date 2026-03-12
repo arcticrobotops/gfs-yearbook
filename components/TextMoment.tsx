@@ -64,7 +64,7 @@ export default function TextMoment({ index }: TextMomentProps) {
         >
           {/* SUPERLATIVES header */}
           <div className="mb-4">
-            <span className="font-display text-gold text-xs tracking-[0.3em] uppercase font-semibold">
+            <span className="font-display text-gold text-xs tracking-[0.15em] sm:tracking-[0.3em] uppercase font-semibold">
               Superlatives
             </span>
           </div>
