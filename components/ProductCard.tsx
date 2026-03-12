@@ -82,7 +82,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
             {product.title}
           </h3>
           <p
-            className="font-body text-charcoal/60 text-xs sm:text-sm mt-1.5 tracking-wide"
+            className="font-body text-charcoal/60 text-[13px] sm:text-sm mt-1.5 tracking-wide"
             aria-label={
               price === maxPrice
                 ? `Price: $${price.toFixed(0)}`

@@ -269,7 +269,7 @@ export default function ProductDetails({
             href={checkoutUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-block w-full text-center font-display tracking-[0.2em] uppercase text-sm py-3.5 px-8 rounded-sm transition-colors shadow-sm hover:shadow-md ${
+            className={`inline-block w-full text-center font-display tracking-[0.1em] sm:tracking-[0.2em] uppercase text-sm py-3.5 px-8 rounded-sm transition-colors shadow-sm hover:shadow-md ${
               canBuy
                 ? 'bg-maroon hover:bg-maroon/90 text-cream'
                 : 'bg-charcoal/20 text-charcoal/50 cursor-not-allowed pointer-events-none'
@@ -281,12 +281,12 @@ export default function ProductDetails({
       </div>
 
       {/* Mobile sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-cream border-t border-gold/20 px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] safe-area-bottom">
+      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-cream border-t border-gold/20 px-4 py-4 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] safe-area-bottom">
         <a
           href={checkoutUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={`block w-full text-center font-display tracking-[0.2em] uppercase text-sm py-3.5 rounded-sm transition-colors shadow-sm ${
+          className={`block w-full text-center font-display tracking-[0.1em] sm:tracking-[0.2em] uppercase text-sm py-3.5 rounded-sm transition-colors shadow-sm ${
             canBuy
               ? 'bg-maroon hover:bg-maroon/90 text-cream'
               : 'bg-charcoal/20 text-charcoal/50 cursor-not-allowed pointer-events-none'
@@ -301,7 +301,7 @@ export default function ProductDetails({
         <div className="col-span-full mt-12 sm:mt-16">
           <hr className="yearbook-divider max-w-xs mx-auto mb-8" />
           <div className="text-center mb-6">
-            <p className="font-display text-gold text-xs tracking-[0.3em] uppercase mb-1">
+            <p className="font-display text-gold text-xs tracking-[0.15em] sm:tracking-[0.3em] uppercase mb-1">
               Also in the Yearbook
             </p>
             <h2 className="font-display text-varsity-blue text-xl sm:text-2xl italic">
@@ -339,7 +339,7 @@ export default function ProductDetails({
                       <h3 className="font-display text-charcoal text-xs sm:text-sm italic leading-tight line-clamp-2">
                         {rp.title}
                       </h3>
-                      <p className="font-body text-charcoal/60 text-xs mt-1 tracking-wide">
+                      <p className="font-body text-charcoal/60 text-[13px] mt-1 tracking-wide">
                         ${rp.price.toFixed(0)}
                       </p>
                     </div>

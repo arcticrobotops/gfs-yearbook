@@ -23,10 +23,10 @@ export default function Navbar({
         <div className="flex items-center justify-between py-4">
           <div className="flex-1" />
           <div className="text-center">
-            <h1 className="font-display text-cream text-sm tracking-[0.25em] uppercase font-semibold sm:text-base lg:text-lg">
+            <h1 className="font-display text-cream text-sm tracking-[0.15em] sm:tracking-[0.25em] uppercase font-semibold sm:text-base lg:text-lg">
               Ghost Forest Surf Club Annual
             </h1>
-            <p className="font-display text-gold text-xs tracking-[0.15em] uppercase mt-0.5">
+            <p className="font-display text-gold text-[13px] tracking-[0.15em] uppercase mt-0.5">
               Vol. I
             </p>
           </div>
