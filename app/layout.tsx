@@ -20,6 +20,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://ghostforestsurfclub.com'),
   title: "Ghost Forest Surf Club Annual — Vol. I",
   description:
     "The official yearbook of Ghost Forest Surf Club. Neskowin, Oregon. Volume I.",
@@ -49,6 +50,12 @@ export default function RootLayout({
       <body
         className={`${playfairDisplay.variable} ${dmSans.variable} antialiased bg-cream text-charcoal overflow-x-hidden`}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-varsity-blue focus:text-cream focus:px-4 focus:py-2 focus:rounded-sm focus:text-sm"
+        >
+          Skip to content
+        </a>
         {children}
       </body>
     </html>

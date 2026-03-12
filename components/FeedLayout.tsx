@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 import Navbar from './Navbar';
@@ -37,6 +37,7 @@ export default function FeedLayout({
       setError(false);
       const params = handle !== 'all' ? `?collection=${handle}` : '';
       const res = await fetch(`/api/products${params}`);
+      if (!res.ok) throw new Error('Fetch failed');
       const data = await res.json();
       setProducts(data.products || []);
     } catch {
@@ -47,30 +48,34 @@ export default function FeedLayout({
   }, []);
 
   // Build interleaved feed: editorial every 4 products, text moment every 7
-  const feedItems: Array<
-    | { type: 'product'; product: ShopifyProduct; productIndex: number }
-    | { type: 'editorial'; editorialIndex: number }
-    | { type: 'text-moment'; momentIndex: number }
-  > = [];
+  const feedItems = useMemo(() => {
+    const items: Array<
+      | { type: 'product'; product: ShopifyProduct; productIndex: number }
+      | { type: 'editorial'; editorialIndex: number }
+      | { type: 'text-moment'; momentIndex: number }
+    > = [];
 
-  let editorialCount = 0;
-  let momentCount = 0;
+    let editorialCount = 0;
+    let momentCount = 0;
 
-  products.forEach((product, i) => {
-    // Insert editorial before every 4th product (indices 3, 7, 11...)
-    if (i > 0 && i % 4 === 3) {
-      feedItems.push({ type: 'editorial', editorialIndex: editorialCount });
-      editorialCount++;
-    }
+    products.forEach((product, i) => {
+      // Insert editorial before every 4th product (indices 3, 7, 11...)
+      if (i > 0 && i % 4 === 3) {
+        items.push({ type: 'editorial', editorialIndex: editorialCount });
+        editorialCount++;
+      }
 
-    // Insert text moment before every 7th product (indices 6, 13, 20...)
-    if (i > 0 && i % 7 === 6) {
-      feedItems.push({ type: 'text-moment', momentIndex: momentCount });
-      momentCount++;
-    }
+      // Insert text moment before every 7th product (indices 6, 13, 20...)
+      if (i > 0 && i % 7 === 6) {
+        items.push({ type: 'text-moment', momentIndex: momentCount });
+        momentCount++;
+      }
 
-    feedItems.push({ type: 'product', product, productIndex: i });
-  });
+      items.push({ type: 'product', product, productIndex: i });
+    });
+
+    return items;
+  }, [products]);
 
   return (
     <>
@@ -99,9 +104,9 @@ export default function FeedLayout({
               <p className="font-display text-gold text-xs tracking-[0.2em] sm:tracking-[0.4em] uppercase mb-3 drop-shadow-sm">
                 Neskowin, Oregon
               </p>
-              <h2 className="font-display text-cream text-3xl sm:text-4xl lg:text-5xl italic leading-tight drop-shadow-md">
+              <h1 className="font-display text-cream text-2xl sm:text-3xl lg:text-5xl italic leading-tight drop-shadow-md">
                 The Coldwater Cowboys<br className="hidden sm:block" /> of the 45th Parallel
-              </h2>
+              </h1>
               <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4">
                 <span className="text-gold text-sm sm:text-base drop-shadow-sm">&#9733;</span>
                 <div className="w-8 sm:w-12 h-px bg-gold/60" />
@@ -120,7 +125,7 @@ export default function FeedLayout({
       )}
 
       {/* Feed */}
-      <main ref={gridRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main id="main-content" ref={gridRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {error ? (
           <div className="text-center py-20" role="alert">
             <p className="font-display text-maroon text-lg italic mb-3">

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ShopifyProduct } from '@/types/shopify';
+import { formatPrice } from '@/lib/utils';
 
 const BLUR_DATA_URL = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+PHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPScjRkFGNkYwJy8+PC9zdmc+';
 
@@ -44,7 +45,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.handle}`}
-      aria-label={`View ${product.title} — ${price === maxPrice ? `$${price.toFixed(0)}` : `$${price.toFixed(0)} to $${maxPrice.toFixed(0)}`}`}
+      aria-label={`View ${product.title} — ${formatPrice(price, maxPrice)}`}
       className={`group block min-h-[44px] ${rotationClass} transition-[transform,box-shadow] duration-300 ease-out hover:scale-105 hover:rotate-0 hover:drop-shadow-xl`}
     >
       <div className="relative polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
@@ -87,15 +88,9 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           </h3>
           <p
             className="font-body text-charcoal/60 text-[13px] sm:text-sm mt-1.5 tracking-wide"
-            aria-label={
-              price === maxPrice
-                ? `Price: $${price.toFixed(0)}`
-                : `Price: $${price.toFixed(0)} to $${maxPrice.toFixed(0)}`
-            }
+            aria-label={`Price: ${formatPrice(price, maxPrice)}`}
           >
-            {price === maxPrice
-              ? `$${price.toFixed(0)}`
-              : `$${price.toFixed(0)} – $${maxPrice.toFixed(0)}`}
+            {formatPrice(price, maxPrice)}
           </p>
         </div>
       </div>

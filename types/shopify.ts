@@ -42,30 +42,18 @@ export interface ShopifyCollection {
   handle: string;
 }
 
-// Feed card types
-export type FeedCardType = 'product' | 'editorial' | 'text-moment';
-
-export interface ProductCard {
-  type: 'product';
-  product: ShopifyProduct;
+export interface ShopifyVariant {
+  id: string;
+  title: string;
+  availableForSale: boolean;
+  price: ShopifyPrice;
+  selectedOptions: Array<{ name: string; value: string }>;
 }
 
-export interface EditorialCard {
-  type: 'editorial';
-  imageUrl: string;
-  alt: string;
-}
-
-export interface TextMomentCard {
-  type: 'text-moment';
-  text: string;
-  bgColor: 'green' | 'linen';
-}
-
-export type FeedCard = ProductCard | EditorialCard | TextMomentCard;
-
-// Grid layout pattern
-export interface GridSpan {
-  colSpan: number;
-  rowSpan: number;
+export interface ShopifyProductDetail extends ShopifyProduct {
+  description: string;
+  descriptionHtml: string;
+  variants: {
+    edges: Array<{ node: ShopifyVariant }>;
+  };
 }

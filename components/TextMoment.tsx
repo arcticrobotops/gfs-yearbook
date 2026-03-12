@@ -70,7 +70,7 @@ export default function TextMoment({ index }: TextMomentProps) {
           </div>
 
           {/* Star decoration */}
-          <div className={`text-2xl mb-3 ${isBlue ? 'text-gold' : 'text-maroon'}`}>
+          <div aria-hidden="true" className={`text-2xl mb-3 ${isBlue ? 'text-gold' : 'text-maroon'}`}>
             ★
           </div>
 
@@ -93,7 +93,7 @@ export default function TextMoment({ index }: TextMomentProps) {
           </p>
 
           {/* Bottom star */}
-          <div className={`text-2xl mt-3 ${isBlue ? 'text-gold' : 'text-maroon'}`}>
+          <div aria-hidden="true" className={`text-2xl mt-3 ${isBlue ? 'text-gold' : 'text-maroon'}`}>
             ★
           </div>
         </div>

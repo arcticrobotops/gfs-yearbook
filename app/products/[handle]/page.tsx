@@ -1,11 +1,9 @@
-import { Suspense } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getProductByHandle, getProducts } from '@/lib/shopify';
 import ProductDetails from '@/components/ProductDetails';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import PDPSkeleton from '@/components/PDPSkeleton';
 
 export const revalidate = 60;
 
@@ -140,23 +138,21 @@ export default async function ProductPage({
         </Link>
       </div>
 
-      <Suspense fallback={<PDPSkeleton />}>
-        <article className="max-w-5xl mx-auto px-4 pb-20">
-          {/* Header strip */}
-          <div className="text-center mb-8">
-            <p className="font-display text-gold tracking-[0.25em] uppercase text-xs sm:text-sm mb-1">
-              Member Profile
-            </p>
-            <h1 className="font-display text-varsity-blue text-3xl sm:text-4xl md:text-5xl italic leading-tight">
-              {product.title}
-            </h1>
-            <hr className="yearbook-divider max-w-xs mx-auto mt-4" />
-          </div>
+      <article className="max-w-5xl mx-auto px-4 pb-20">
+        {/* Header strip */}
+        <div className="text-center mb-8">
+          <p className="font-display text-gold tracking-[0.25em] uppercase text-xs sm:text-sm mb-1">
+            Member Profile
+          </p>
+          <h1 className="font-display text-varsity-blue text-3xl sm:text-4xl md:text-5xl italic leading-tight">
+            {product.title}
+          </h1>
+          <hr className="yearbook-divider max-w-xs mx-auto mt-4" />
+        </div>
 
-          <ErrorBoundary>
-            <ProductDetails
+        <ErrorBoundary>
+          <ProductDetails
             title={product.title}
-            handle={product.handle}
             description={product.description}
             descriptionHtml={product.descriptionHtml}
             productType={product.productType}
@@ -170,9 +166,8 @@ export default async function ProductPage({
             maxPrice={maxPrice}
             relatedProducts={relatedProducts}
           />
-          </ErrorBoundary>
-        </article>
-      </Suspense>
+        </ErrorBoundary>
+      </article>
     </main>
   );
 }

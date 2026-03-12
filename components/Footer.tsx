@@ -38,7 +38,7 @@ export default function Footer() {
           {/* Tagline */}
           <div className="pt-2">
             <p className="font-display text-gold text-sm italic tracking-wide">
-              &#9733; Coldwater Cowboys &#9733; 45th Parallel &#9733;
+              <span aria-hidden="true">&#9733;</span> Coldwater Cowboys <span aria-hidden="true">&#9733;</span> 45th Parallel <span aria-hidden="true">&#9733;</span>
             </p>
           </div>
 

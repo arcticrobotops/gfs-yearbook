@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { formatPrice } from '@/lib/utils';
 
 interface Variant {
   id: string;
@@ -28,7 +29,6 @@ interface RelatedProduct {
 
 interface ProductDetailsProps {
   title: string;
-  handle: string;
   description?: string;
   descriptionHtml?: string;
   productType?: string;
@@ -42,6 +42,8 @@ interface ProductDetailsProps {
   maxPrice: number;
   relatedProducts?: RelatedProduct[];
 }
+
+const rotations = ['card-rotate-0', 'card-rotate-1', 'card-rotate-2', 'card-rotate-3'];
 
 export default function ProductDetails({
   title,
@@ -191,7 +193,7 @@ export default function ProductDetails({
                 Dues:
               </dt>
               <dd className="font-body text-maroon font-semibold">
-                ${displayPrice.toFixed(0)}
+                {formatPrice(displayPrice)}
               </dd>
             </div>
           </dl>
@@ -247,6 +249,7 @@ export default function ProductDetails({
                 <button
                   key={v.id}
                   onClick={() => v.availableForSale && setSelectedVariant(v)}
+                  aria-pressed={selectedVariant?.id === v.id}
                   className={`inline-block border text-[13px] tracking-wide px-3 py-1.5 rounded-sm font-body transition-colors min-h-[44px] ${
                     !v.availableForSale
                       ? 'border-charcoal/15 text-charcoal/40 line-through cursor-not-allowed'
@@ -275,7 +278,7 @@ export default function ProductDetails({
                 : 'bg-charcoal/20 text-charcoal/50 cursor-not-allowed pointer-events-none'
             }`}
           >
-            {canBuy ? `Claim Yours — $${displayPrice.toFixed(0)}` : 'Sold Out'}
+            {canBuy ? `Claim Yours — ${formatPrice(displayPrice)}` : 'Sold Out'}
           </a>
         </div>
       </div>
@@ -296,7 +299,7 @@ export default function ProductDetails({
                 : 'bg-charcoal/20 text-charcoal/50 cursor-not-allowed pointer-events-none'
             }`}
           >
-            {canBuy ? `Claim Yours — $${displayPrice.toFixed(0)}` : 'Sold Out'}
+            {canBuy ? `Claim Yours — ${formatPrice(displayPrice)}` : 'Sold Out'}
           </a>
         </div>
       </div>
@@ -315,7 +318,6 @@ export default function ProductDetails({
           </div>
           <div className="grid grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto">
             {relatedProducts.map((rp, i) => {
-              const rotations = ['card-rotate-0', 'card-rotate-1', 'card-rotate-2', 'card-rotate-3'];
               return (
                 <Link
                   key={rp.handle}
@@ -345,7 +347,7 @@ export default function ProductDetails({
                         {rp.title}
                       </h3>
                       <p className="font-body text-charcoal/60 text-[13px] mt-1 tracking-wide">
-                        ${rp.price.toFixed(0)}
+                        {formatPrice(rp.price)}
                       </p>
                     </div>
                   </div>
