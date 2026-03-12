@@ -43,7 +43,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
     <Link
       href={`/products/${product.handle}`}
       aria-label={`View ${product.title} — ${price === maxPrice ? `$${price.toFixed(0)}` : `$${price.toFixed(0)} to $${maxPrice.toFixed(0)}`}`}
-      className={`group block min-h-[44px] ${rotationClass} transition-[transform] duration-300 ease-out hover:scale-105 hover:rotate-0`}
+      className={`group block min-h-[44px] ${rotationClass} transition-[transform,box-shadow] duration-300 ease-out hover:scale-105 hover:rotate-0 hover:drop-shadow-xl`}
     >
       <div className="relative polaroid-card bg-white p-3 sm:p-4 pb-0 rounded-[2px]">
         {/* Hover annotation badge — only shown for tagged products */}
