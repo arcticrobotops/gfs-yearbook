@@ -247,7 +247,7 @@ export default function ProductDetails({
                 <button
                   key={v.id}
                   onClick={() => v.availableForSale && setSelectedVariant(v)}
-                  className={`inline-block border text-xs tracking-wide px-3 py-1.5 rounded-sm font-body transition-all min-h-[36px] ${
+                  className={`inline-block border text-xs tracking-wide px-3 py-1.5 rounded-sm font-body transition-colors min-h-[44px] ${
                     !v.availableForSale
                       ? 'border-charcoal/15 text-charcoal/40 line-through cursor-not-allowed'
                       : selectedVariant?.id === v.id
@@ -281,7 +281,7 @@ export default function ProductDetails({
       </div>
 
       {/* Mobile sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-cream/95 backdrop-blur-sm border-t border-gold/20 px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-cream border-t border-gold/20 px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] safe-area-bottom">
         <a
           href={checkoutUrl}
           target="_blank"
@@ -315,7 +315,7 @@ export default function ProductDetails({
                 <Link
                   key={rp.handle}
                   href={`/products/${rp.handle}`}
-                  className={`group block ${rotations[i % rotations.length]} transition-all duration-300 ease-out hover:scale-105 hover:rotate-0`}
+                  className={`group block ${rotations[i % rotations.length]} transition-transform duration-300 ease-out hover:scale-105 hover:rotate-0`}
                 >
                   <div className="polaroid-card bg-white p-2 sm:p-3 pb-0 rounded-[2px]">
                     <div className="relative aspect-square overflow-hidden bg-cream">

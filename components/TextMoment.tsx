@@ -45,7 +45,7 @@ export default function TextMoment({ index }: TextMomentProps) {
 
   return (
     <div
-      className={`rounded-[2px] p-6 sm:p-8 text-center transition-all duration-300 ${
+      className={`rounded-[2px] p-6 sm:p-8 text-center transition-[background-color,opacity] duration-300 ${
         isBlue
           ? 'bg-varsity-blue text-cream'
           : 'bg-cream border-2 border-maroon/20 text-charcoal'

@@ -40,7 +40,7 @@ export default function Navbar({
         <div className="hidden lg:flex items-center justify-center gap-1 pb-3">
           <button
             onClick={() => onCollectionChange('all')}
-            className={`px-4 py-1.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm transition-all duration-200 ${
+            className={`px-4 py-1.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm transition-colors duration-200 ${
               activeCollection === 'all'
                 ? 'bg-gold text-varsity-blue font-semibold'
                 : 'text-cream/70 hover:text-cream hover:bg-cream/10'
@@ -52,7 +52,7 @@ export default function Navbar({
             <button
               key={collection.handle}
               onClick={() => onCollectionChange(collection.handle)}
-              className={`px-4 py-1.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm transition-all duration-200 ${
+              className={`px-4 py-1.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm transition-colors duration-200 ${
                 activeCollection === collection.handle
                   ? 'bg-gold text-varsity-blue font-semibold'
                   : 'text-cream/70 hover:text-cream hover:bg-cream/10'
@@ -66,10 +66,10 @@ export default function Navbar({
 
       {/* Mobile horizontal scrolling pills */}
       <div className="lg:hidden border-t border-cream/10 bg-varsity-blue">
-        <div className="flex overflow-x-auto scroll-smooth px-4 py-2.5 gap-2 nav-scroll-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory px-4 py-2.5 gap-2 nav-scroll-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
           <button
             onClick={() => onCollectionChange('all')}
-            className={`flex-none min-h-[44px] px-4 py-2.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm whitespace-nowrap transition-all duration-200 ${
+            className={`flex-none snap-start min-h-[44px] px-4 py-2.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm whitespace-nowrap transition-colors duration-200 ${
               activeCollection === 'all'
                 ? 'bg-gold text-varsity-blue font-semibold'
                 : 'text-cream/70 hover:text-cream bg-cream/5'
@@ -81,7 +81,7 @@ export default function Navbar({
             <button
               key={collection.handle}
               onClick={() => onCollectionChange(collection.handle)}
-              className={`flex-none min-h-[44px] px-4 py-2.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm whitespace-nowrap transition-all duration-200 ${
+              className={`flex-none snap-start min-h-[44px] px-4 py-2.5 text-xs tracking-[0.12em] uppercase font-body rounded-sm whitespace-nowrap transition-colors duration-200 ${
                 activeCollection === collection.handle
                   ? 'bg-gold text-varsity-blue font-semibold'
                   : 'text-cream/70 hover:text-cream bg-cream/5'

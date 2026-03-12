@@ -60,7 +60,7 @@ export default function EditorialCard({
   const rotationClass = rotations[index % rotations.length];
 
   return (
-    <div className={`${rotationClass} transition-all duration-300 hover:rotate-0`}>
+    <div className={`${rotationClass} transition-transform duration-300 hover:rotate-0`}>
       {/* MEMORIES header */}
       <div className="text-center mb-3">
         <span className="font-display text-gold text-xs tracking-[0.3em] uppercase font-semibold">
