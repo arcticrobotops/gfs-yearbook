@@ -29,6 +29,11 @@ export const metadata: Metadata = {
       "The official yearbook of Ghost Forest Surf Club. Neskowin, Oregon. Volume I.",
     siteName: "Ghost Forest Surf Club",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ghost Forest Surf Club Annual — Vol. I",
+    description: "The official yearbook of Ghost Forest Surf Club. Neskowin, Oregon. Volume I.",
+  },
 };
 
 export default function RootLayout({
