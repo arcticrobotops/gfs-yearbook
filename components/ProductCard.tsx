@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ShopifyProduct } from '@/types/shopify';
 
+const BLUR_DATA_URL = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+PHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPScjRkFGNkYwJy8+PC9zdmc+';
+
 interface ProductCardProps {
   product: ShopifyProduct;
   index: number;
@@ -66,6 +68,8 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover yearbook-image"
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-cream">
